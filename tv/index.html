@@ -31,8 +31,7 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 60px;
-      background: rgba(10,10,10,.92);
-      backdrop-filter: blur(16px);
+      background: rgba(10,10,10,.95);
       border-bottom: 1px solid rgba(37,150,190,.2);
       display: flex;
       align-items: center;
@@ -47,11 +46,7 @@
       color: var(--white);
     }
     .topbar-logo span { color: var(--primary); }
-    .topbar-info {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
+    .topbar-info { display: flex; align-items: center; gap: 2rem; }
     .topbar-item {
       display: flex;
       align-items: center;
@@ -96,7 +91,6 @@
       width: 12px; height: 12px;
       background: var(--primary);
       border-radius: 50%;
-      box-shadow: 0 0 20px var(--primary-glow), 0 0 40px var(--primary-glow);
     }
 
     /* ── PANEL ── */
@@ -118,24 +112,17 @@
     .corner--bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); }
     .corner--br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
 
-    /* media */
+    /* media — solo fade, sin zoom (ahorra GPU) */
     .panel-media {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transform: scale(1.06);
-      transition: opacity .9s ease, transform 7s ease-out;
+      transition: opacity .7s ease;
       z-index: 1;
     }
-    .panel-media.active {
-      opacity: 1;
-      transform: scale(1);
-    }
-    .panel-media.exit {
-      opacity: 0;
-      transform: scale(1.03);
-    }
+    .panel-media.active { opacity: 1; }
+    .panel-media.exit   { opacity: 0; }
 
     /* gradient overlay */
     .panel-overlay {
@@ -203,7 +190,7 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       height: 36px;
-      background: rgba(10,10,10,.92);
+      background: rgba(10,10,10,.95);
       border-top: 1px solid rgba(37,150,190,.15);
       display: flex;
       align-items: center;
@@ -215,12 +202,11 @@
       width: 6px; height: 6px;
       border-radius: 50%;
       background: rgba(255,255,255,.15);
-      transition: all .4s;
+      transition: background .4s, transform .4s;
     }
     .dot.active {
       background: var(--primary);
       transform: scale(1.5);
-      box-shadow: 0 0 8px var(--primary-glow);
     }
 
     /* progress bar */
@@ -229,7 +215,6 @@
       bottom: 36px; left: 0;
       height: 2px;
       background: var(--primary);
-      box-shadow: 0 0 10px var(--primary-glow);
       width: 0%;
       z-index: 21;
       transition: none;
@@ -336,12 +321,26 @@
 
 <script>
   const INTERVAL = 7000;
-  const VID_EXTS = ['mp4','mov','webm'];
 
-  let files = [];
+  // Solo JPGs — los videos MOV son muy pesados en TVs
+  const files = [
+    'PHOTO-2026-03-25-10-53-52.jpg','IMG_9067.jpg','IMG_9936.jpg','IMG_9835.jpg',
+    'IMG_0014.jpg','IMG_9995.jpg','IMG_0086.jpg','IMG_0179.jpg','IMG_0105.jpg',
+    'IMG_0360.jpg','IMG_0565.jpg','44f1fcfa-cbb8-43bd-8895-865989360410.jpg',
+    'd94baeb9-9762-4bcb-996c-548de174bf5d.jpg','cae39957-a6b0-4812-8e63-ed55de8829b6.jpg',
+    'c712000c-c076-4417-957c-eaed72cc34a2.jpg','275e03bc-9a04-4da9-9a59-239a411db7bb.jpg',
+    '44bbd053-026f-4709-b59a-a75664370b95.jpg','a4a903bd-fad5-4177-abeb-037476e896d6.jpg',
+    'ec2eb1cf-fd80-4988-a5ce-8be31d9da084.jpg','copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.jpg',
+    'copy_802AA5CC-C893-4EEB-BA81-661093BA3870.jpg','f480aeae-583b-4bee-80e3-4aa4a57b32b4.jpg',
+    'IMG_9747.jpg','89661273-4de7-4729-98a7-6766125aafe1.jpg',
+    '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.jpg','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.jpg',
+    '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.jpg','84602367-2016-40ff-8286-05ed95bbfbe5.jpg',
+    'af971262-6319-4b8e-b1cc-0be6dd20509d.jpg','a490c7a8-42df-413a-9618-d4819512e134.jpg'
+  ];
+
   let imgIdx = 0;
   let panelTurn = 0; // 0 = panelA, 1 = panelB
-  let dotCount = 0;
+  const dotCount = Math.min(Math.ceil(files.length / 2), 12);
 
   // Clock
   function tick() {
@@ -363,103 +362,83 @@
   }
 
   // Dots
-  function buildDots(n) {
+  function buildDots() {
     const el = document.getElementById('dots');
-    el.innerHTML = '';
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < dotCount; i++) {
       const d = document.createElement('div');
       d.className = 'dot' + (i === 0 ? ' active' : '');
       el.appendChild(d);
     }
   }
-  function updateDots(pairIdx) {
-    document.querySelectorAll('.dot').forEach((d, i) => {
-      d.classList.toggle('active', i === pairIdx % dotCount);
+  function updateDots(i) {
+    document.querySelectorAll('.dot').forEach((d, j) => {
+      d.classList.toggle('active', j === i % dotCount);
     });
   }
 
-  // Create media element
-  function makeMedia(filename) {
-    const ext = filename.split('.').pop().toLowerCase();
-    const src = '/images/cuts/' + filename;
-    let el;
-    if (VID_EXTS.includes(ext)) {
-      el = document.createElement('video');
-      el.src = src;
-      el.autoplay = true;
-      el.muted = true;
-      el.loop = true;
-      el.playsInline = true;
-    } else {
-      el = document.createElement('img');
-      el.src = src;
-      el.alt = 'Next Level Barbershop';
-    }
-    el.className = 'panel-media';
-    return el;
+  // Preload next image in background
+  function preload(filename) {
+    const img = new Image();
+    img.src = '/images/cuts/' + filename;
   }
 
-  // Swap one panel
+  // Swap one panel — fade only, remove old element quickly
   function swapPanel(panel, filename, num) {
     const old = panel.querySelector('.panel-media.active');
     if (old) {
       old.classList.remove('active');
       old.classList.add('exit');
-      setTimeout(() => old.remove(), 1200);
+      setTimeout(() => old.remove(), 800);
     }
-    const med = makeMedia(filename);
+    const img = new Image();
+    img.className = 'panel-media';
+    img.alt = 'Next Level Barbershop';
+    img.decoding = 'async';
+    img.src = '/images/cuts/' + filename;
     const branding = panel.querySelector('.panel-branding');
-    panel.insertBefore(med, branding);
+    panel.insertBefore(img, branding);
     const numEl = panel.querySelector('.slide-num');
     if (numEl) numEl.textContent = String(num).padStart(2,'0');
-    requestAnimationFrame(() => requestAnimationFrame(() => med.classList.add('active')));
+    // Show once decoded — avoids blank flash
+    img.decode().then(() => {
+      requestAnimationFrame(() => img.classList.add('active'));
+    }).catch(() => {
+      requestAnimationFrame(() => img.classList.add('active'));
+    });
   }
 
-  // Advance one panel at a time, alternating A → B → A → B
+  // Advance one panel at a time: A → B → A → B
   function advance() {
     const panelId = panelTurn === 0 ? 'panelA' : 'panelB';
     const fi = imgIdx % files.length;
     swapPanel(document.getElementById(panelId), files[fi], fi + 1);
-    updateDots(Math.floor(imgIdx / 2) % dotCount);
+    updateDots(Math.floor(imgIdx / 2));
     imgIdx++;
     panelTurn = 1 - panelTurn;
     resetBar();
+    // Preload the one after next
+    preload(files[(imgIdx + 1) % files.length]);
   }
 
   // Init
   function init() {
-    files = [
-      'PHOTO-2026-03-25-10-53-52.jpg','IMG_9067.jpg','IMG_9936.jpg','IMG_9835.jpg',
-      'IMG_0014.jpg','IMG_9995.jpg','IMG_0086.jpg','IMG_0179.jpg','IMG_0105.jpg',
-      'IMG_0360.jpg','IMG_0565.jpg','44f1fcfa-cbb8-43bd-8895-865989360410.jpg',
-      'd94baeb9-9762-4bcb-996c-548de174bf5d.jpg','cae39957-a6b0-4812-8e63-ed55de8829b6.jpg',
-      'c712000c-c076-4417-957c-eaed72cc34a2.jpg','275e03bc-9a04-4da9-9a59-239a411db7bb.jpg',
-      '44bbd053-026f-4709-b59a-a75664370b95.jpg','a4a903bd-fad5-4177-abeb-037476e896d6.jpg',
-      'ec2eb1cf-fd80-4988-a5ce-8be31d9da084.jpg','copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.jpg',
-      'copy_802AA5CC-C893-4EEB-BA81-661093BA3870.jpg','f480aeae-583b-4bee-80e3-4aa4a57b32b4.jpg',
-      'IMG_9747.jpg','89661273-4de7-4729-98a7-6766125aafe1.jpg',
-      '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.jpg','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.jpg',
-      '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.jpg','84602367-2016-40ff-8286-05ed95bbfbe5.jpg',
-      'af971262-6319-4b8e-b1cc-0be6dd20509d.jpg','a490c7a8-42df-413a-9618-d4819512e134.jpg',
-      'IMG_0034.mov','IMG_0530.mov','IMG_0571.mov','49f628212c564299a1e4a35c53f9fe82.mov','IMG_0586.mov'
-    ];
-
-    while (files.length < 2) files = [...files, ...files];
-
-    dotCount = Math.min(Math.ceil(files.length / 2), 12);
-    buildDots(dotCount);
+    buildDots();
 
     const loader = document.getElementById('loader');
     loader.classList.add('hide');
     setTimeout(() => loader.remove(), 800);
 
-    // Show initial pair
     swapPanel(document.getElementById('panelA'), files[0], 1);
-    setTimeout(() => swapPanel(document.getElementById('panelB'), files[1 % files.length], 2), 180);
+    setTimeout(() => swapPanel(document.getElementById('panelB'), files[1], 2), 200);
     imgIdx = 2;
     panelTurn = 0;
     updateDots(0);
     resetBar();
+
+    // Preload next 2 images
+    preload(files[2]);
+    preload(files[3 % files.length]);
+
     setInterval(advance, INTERVAL);
   }
 
