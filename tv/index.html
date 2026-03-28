@@ -401,21 +401,17 @@
 
   // Swap one panel
   function swapPanel(panel, filename, num) {
-    // Fade out old
     const old = panel.querySelector('.panel-media.active');
     if (old) {
       old.classList.remove('active');
       old.classList.add('exit');
       setTimeout(() => old.remove(), 1200);
     }
-    // Add new
     const med = makeMedia(filename);
     const branding = panel.querySelector('.panel-branding');
     panel.insertBefore(med, branding);
-    // Update number
     const numEl = panel.querySelector('.slide-num');
     if (numEl) numEl.textContent = String(num).padStart(2,'0');
-    // Activate after reflow
     requestAnimationFrame(() => requestAnimationFrame(() => med.classList.add('active')));
   }
 
@@ -448,19 +444,11 @@
       'IMG_0034.mov','IMG_0530.mov','IMG_0571.mov','49f628212c564299a1e4a35c53f9fe82.mov','IMG_0586.mov'
     ];
 
-    if (files.length === 0) {
-      document.getElementById('loader').innerHTML =
-        '<div style="color:#999;font-family:Outfit,sans-serif;font-size:.9rem;letter-spacing:1px">No images found in images/cuts/</div>';
-      return;
-    }
-
-    // Need at least 2 entries to fill both panels
     while (files.length < 2) files = [...files, ...files];
 
     dotCount = Math.min(Math.ceil(files.length / 2), 12);
     buildDots(dotCount);
 
-    // Hide loader
     const loader = document.getElementById('loader');
     loader.classList.add('hide');
     setTimeout(() => loader.remove(), 800);
@@ -476,7 +464,6 @@
   }
 
   init();
-
 </script>
 </body>
 </html>
