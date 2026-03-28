@@ -98,6 +98,8 @@
       position: relative;
       overflow: hidden;
       background: var(--dark2);
+      /* GPU layer — evita repaints durante el fade */
+      transform: translateZ(0);
     }
 
     /* corner accents */
@@ -112,17 +114,20 @@
     .corner--bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); }
     .corner--br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
 
-    /* media — solo fade, sin zoom (ahorra GPU) */
+    /* media — fade suave, GPU-composited */
     .panel-media {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity .7s ease;
+      /* will-change le dice al browser que prepare una capa GPU para esta propiedad */
+      will-change: opacity;
+      transform: translateZ(0);
+      transition: opacity .8s ease;
       z-index: 1;
     }
-    .panel-media.active { opacity: 1; }
-    .panel-media.exit   { opacity: 0; }
+    .panel-media.active  { opacity: 1; }
+    .panel-media.exiting { opacity: 0; }
 
     /* gradient overlay */
     .panel-overlay {
@@ -202,7 +207,6 @@
       width: 6px; height: 6px;
       border-radius: 50%;
       background: rgba(255,255,255,.15);
-      transition: background .4s, transform .4s;
     }
     .dot.active {
       background: var(--primary);
@@ -217,10 +221,9 @@
       background: var(--primary);
       width: 0%;
       z-index: 21;
-      transition: none;
     }
     .progress.animating {
-      transition: width 7s linear;
+      transition: width 8s linear;
       width: 100%;
     }
 
@@ -320,29 +323,44 @@
 <div class="bottombar" id="dots"></div>
 
 <script>
-  const INTERVAL = 7000;
+  const INTERVAL   = 8000;  // ms entre slides
+  const FADE_OUT   = 900;   // ms — esperar a que termine el fade-out antes de borrar
+  const BASE_PATH  = '/images/cuts/';
 
-  // Solo JPGs — los videos MOV son muy pesados en TVs
+  // ── WebP: archivos más livianos = carga más rápida ──
   const files = [
-    'PHOTO-2026-03-25-10-53-52.jpg','IMG_9067.jpg','IMG_9936.jpg','IMG_9835.jpg',
-    'IMG_0014.jpg','IMG_9995.jpg','IMG_0086.jpg','IMG_0179.jpg','IMG_0105.jpg',
-    'IMG_0360.jpg','IMG_0565.jpg','44f1fcfa-cbb8-43bd-8895-865989360410.jpg',
-    'd94baeb9-9762-4bcb-996c-548de174bf5d.jpg','cae39957-a6b0-4812-8e63-ed55de8829b6.jpg',
-    'c712000c-c076-4417-957c-eaed72cc34a2.jpg','275e03bc-9a04-4da9-9a59-239a411db7bb.jpg',
-    '44bbd053-026f-4709-b59a-a75664370b95.jpg','a4a903bd-fad5-4177-abeb-037476e896d6.jpg',
-    'ec2eb1cf-fd80-4988-a5ce-8be31d9da084.jpg','copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.jpg',
-    'copy_802AA5CC-C893-4EEB-BA81-661093BA3870.jpg','f480aeae-583b-4bee-80e3-4aa4a57b32b4.jpg',
-    'IMG_9747.jpg','89661273-4de7-4729-98a7-6766125aafe1.jpg',
-    '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.jpg','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.jpg',
-    '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.jpg','84602367-2016-40ff-8286-05ed95bbfbe5.jpg',
-    'af971262-6319-4b8e-b1cc-0be6dd20509d.jpg','a490c7a8-42df-413a-9618-d4819512e134.jpg'
+    'PHOTO-2026-03-25-10-53-52.webp','IMG_9067.webp','IMG_9936.webp','IMG_9835.webp',
+    'IMG_0014.webp','IMG_9995.webp','IMG_0086.webp','IMG_0179.webp','IMG_0105.webp',
+    'IMG_0360.webp','IMG_0565.webp','44f1fcfa-cbb8-43bd-8895-865989360410.webp',
+    'd94baeb9-9762-4bcb-996c-548de174bf5d.webp','cae39957-a6b0-4812-8e63-ed55de8829b6.webp',
+    'c712000c-c076-4417-957c-eaed72cc34a2.webp','275e03bc-9a04-4da9-9a59-239a411db7bb.webp',
+    'a4a903bd-fad5-4177-abeb-037476e896d6.webp',
+    'ec2eb1cf-fd80-4988-a5ce-8be31d9da084.webp','copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.webp',
+    'copy_802AA5CC-C893-4EEB-BA81-661093BA3870.webp','f480aeae-583b-4bee-80e3-4aa4a57b32b4.webp',
+    'IMG_9747.webp','89661273-4de7-4729-98a7-6766125aafe1.webp',
+    '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.webp','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.webp',
+    '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.webp','84602367-2016-40ff-8286-05ed95bbfbe5.webp',
+    'af971262-6319-4b8e-b1cc-0be6dd20509d.webp','a490c7a8-42df-413a-9618-d4819512e134.webp'
   ];
 
-  let imgIdx = 0;
-  let panelTurn = 0; // 0 = panelA, 1 = panelB
+  let imgIdx   = 0;
+  let panelTurn = 0;
   const dotCount = Math.min(Math.ceil(files.length / 2), 12);
 
-  // Clock
+  // ── Caché de preload: carga TODAS las imágenes al arrancar ──
+  // Cuando el navegador ya tiene la imagen en caché, img.decode() es instantáneo
+  const pool = {};
+  function warmCache(filename) {
+    if (pool[filename]) return;
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = BASE_PATH + filename;
+    pool[filename] = img;
+  }
+  // Arranca la descarga de todo desde el primer momento
+  files.forEach(warmCache);
+
+  // ── Reloj ──
   function tick() {
     const n = new Date();
     document.getElementById('clock').textContent =
@@ -351,17 +369,15 @@
   tick();
   setInterval(tick, 1000);
 
-  // Progress bar
+  // ── Barra de progreso ──
   const bar = document.getElementById('progress');
   function resetBar() {
     bar.classList.remove('animating');
-    bar.style.transition = 'none';
-    bar.style.width = '0%';
-    void bar.offsetWidth;
+    void bar.offsetWidth; // fuerza reflow para reiniciar la animación
     bar.classList.add('animating');
   }
 
-  // Dots
+  // ── Dots ──
   function buildDots() {
     const el = document.getElementById('dots');
     for (let i = 0; i < dotCount; i++) {
@@ -376,70 +392,91 @@
     });
   }
 
-  // Preload next image in background
-  function preload(filename) {
-    const img = new Image();
-    img.src = '/images/cuts/' + filename;
-  }
-
-  // Swap one panel — fade only, remove old element quickly
+  // ── Swap de panel ──
+  // La imagen nueva se decodifica (casi instantáneo desde caché) antes de hacer fade-in.
+  // La imagen vieja no se borra hasta DESPUÉS de que la nueva sea visible → sin negro.
   function swapPanel(panel, filename, num) {
     const old = panel.querySelector('.panel-media.active');
-    if (old) {
-      old.classList.remove('active');
-      old.classList.add('exit');
-      setTimeout(() => old.remove(), 800);
-    }
-    const img = new Image();
-    img.className = 'panel-media';
-    img.alt = 'Next Level Barbershop';
-    img.decoding = 'async';
-    img.src = '/images/cuts/' + filename;
+
+    const img = document.createElement('img');
+    img.className  = 'panel-media';
+    img.alt        = '';
+    img.decoding   = 'async';
+    img.src        = BASE_PATH + filename;
+
     const branding = panel.querySelector('.panel-branding');
     panel.insertBefore(img, branding);
+
     const numEl = panel.querySelector('.slide-num');
     if (numEl) numEl.textContent = String(num).padStart(2,'0');
-    // Show once decoded — avoids blank flash
-    img.decode().then(() => {
-      requestAnimationFrame(() => img.classList.add('active'));
-    }).catch(() => {
-      requestAnimationFrame(() => img.classList.add('active'));
-    });
+
+    // Decodificar → fade-in → luego sí quitamos la anterior
+    const show = () => {
+      requestAnimationFrame(() => {
+        img.classList.add('active');
+        if (old) {
+          old.classList.remove('active');
+          old.classList.add('exiting');
+          // Esperar a que termine el fade-out antes de remover del DOM
+          setTimeout(() => { if (old.parentNode) old.remove(); }, FADE_OUT);
+        }
+      });
+    };
+
+    img.decode().then(show).catch(show);
   }
 
-  // Advance one panel at a time: A → B → A → B
+  // ── Avanzar un panel ──
   function advance() {
     const panelId = panelTurn === 0 ? 'panelA' : 'panelB';
-    const fi = imgIdx % files.length;
+    const fi      = imgIdx % files.length;
     swapPanel(document.getElementById(panelId), files[fi], fi + 1);
     updateDots(Math.floor(imgIdx / 2));
     imgIdx++;
     panelTurn = 1 - panelTurn;
     resetBar();
-    // Preload the one after next
-    preload(files[(imgIdx + 1) % files.length]);
   }
 
-  // Init
+  // ── Esperar a que estén listas las primeras imágenes ──
+  // Evita que el TV muestre negro al arrancar
+  function waitForFirst(indices, callback) {
+    let done = false;
+    const finish = () => { if (!done) { done = true; callback(); } };
+
+    // Timeout de seguridad: si tarda más de 6s, arranca igual
+    const timeout = setTimeout(finish, 6000);
+
+    const checks = indices.map(i => {
+      const img = pool[files[i]];
+      if (!img || img.complete) return Promise.resolve();
+      return new Promise(res => { img.onload = res; img.onerror = res; });
+    });
+
+    Promise.all(checks).then(() => { clearTimeout(timeout); finish(); });
+  }
+
+  // ── Init ──
   function init() {
     buildDots();
 
-    const loader = document.getElementById('loader');
-    loader.classList.add('hide');
-    setTimeout(() => loader.remove(), 800);
+    waitForFirst([0, 1], () => {
+      const loader = document.getElementById('loader');
+      if (loader) {
+        loader.classList.add('hide');
+        setTimeout(() => loader.remove(), 800);
+      }
 
-    swapPanel(document.getElementById('panelA'), files[0], 1);
-    setTimeout(() => swapPanel(document.getElementById('panelB'), files[1], 2), 200);
-    imgIdx = 2;
-    panelTurn = 0;
-    updateDots(0);
-    resetBar();
+      swapPanel(document.getElementById('panelA'), files[0], 1);
+      // Panel B con pequeño delay para no saturar el decode al mismo tiempo
+      setTimeout(() => swapPanel(document.getElementById('panelB'), files[1], 2), 350);
 
-    // Preload next 2 images
-    preload(files[2]);
-    preload(files[3 % files.length]);
+      imgIdx    = 2;
+      panelTurn = 0;
+      updateDots(0);
+      resetBar();
 
-    setInterval(advance, INTERVAL);
+      setInterval(advance, INTERVAL);
+    });
   }
 
   init();
