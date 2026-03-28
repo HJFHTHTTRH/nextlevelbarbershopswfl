@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Next Level Barber Shop – Cortes de otro nivel. Citas y walk-ins. 140 Santa Barbara Blvd S, Suite 118, Cape Coral, FL 33991.">
+  <title>Next Level Barber Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #2596be; --primary-dark: #1d7a9e;
+      --primary-glow: rgba(37,150,190,.35);
+      --black: #0a0a0a; --dark: #111; --dark2: #1a1a1a; --dark3: #222;
+      --white: #f5f5f5; --gray: #999; --light-gray: #ccc;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+      --nav-h: 70px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    .navbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-h); background: rgba(10,10,10,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1.2rem,4vw,3rem); border-bottom: 1px solid rgba(255,255,255,.06); transition: background .3s; }
+    .navbar.scrolled { background: rgba(10,10,10,.96); }
+    .nav-logo { font-family: var(--font-display); font-size: clamp(1.3rem,3vw,1.7rem); letter-spacing: 2px; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--primary); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--gray); text-decoration: none; font-size: .85rem; font-weight: 500; letter-spacing: .5px; text-transform: uppercase; transition: color .25s; }
+    .nav-links a:hover { color: var(--primary); }
+    .lang-toggle { background: transparent; border: 1px solid rgba(255,255,255,.2); color: var(--white); padding: .4rem .9rem; border-radius: 4px; font-family: var(--font-body); font-size: .8rem; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: all .25s; }
+    .lang-toggle:hover { border-color: var(--primary); color: var(--primary); }
+    .lang-toggle .active-lang { color: var(--primary); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+    .mobile-nav { display: none; position: fixed; top: var(--nav-h); left: 0; width: 100%; height: calc(100vh - var(--nav-h)); background: rgba(10,10,10,.97); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; z-index: 999; }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a { color: var(--white); text-decoration: none; font-family: var(--font-display); font-size: 2rem; letter-spacing: 3px; transition: color .25s; }
+    .mobile-nav a:hover { color: var(--primary); }
+    @media (max-width: 768px) { .nav-links { display: none; } .hamburger { display: flex; } }
+
+    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: url('images/1.jpg') center/cover no-repeat; filter: brightness(.35); transform: scale(1.05); transition: transform 8s ease-out; }
+    .hero.visible .hero-bg { transform: scale(1); }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,.6) 0%, rgba(10,10,10,.3) 40%, rgba(10,10,10,.85) 100%); }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 1.5rem; max-width: 800px; }
+    .hero-badge { display: inline-block; border: 1px solid var(--primary); color: var(--primary); font-size: .7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: .45rem 1.2rem; border-radius: 2px; margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px); animation: fadeUp .8s .3s forwards; }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(3rem,10vw,7rem); line-height: .95; letter-spacing: 4px; margin-bottom: 1rem; opacity: 0; transform: translateY(30px); animation: fadeUp .8s .5s forwards; }
+    .hero h1 span { color: var(--primary); }
+    .hero-sub { font-size: clamp(.95rem,2vw,1.15rem); color: var(--light-gray); font-weight: 300; letter-spacing: 1px; margin-bottom: 2.5rem; opacity: 0; transform: translateY(20px); animation: fadeUp .8s .7s forwards; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; opacity: 0; transform: translateY(20px); animation: fadeUp .8s .9s forwards; }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .9rem 2rem; font-family: var(--font-body); font-size: .85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; border-radius: 4px; cursor: pointer; transition: all .3s; }
+    .btn-primary { background: var(--primary); color: var(--white); border: 2px solid var(--primary); box-shadow: 0 0 30px var(--primary-glow); }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 40px var(--primary-glow); }
+    .btn-outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,.25); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+    .scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2; opacity: 0; animation: fadeUp .8s 1.3s forwards; }
+    .scroll-indicator span { display: block; width: 20px; height: 32px; border: 2px solid rgba(255,255,255,.3); border-radius: 12px; position: relative; }
+    .scroll-indicator span::after { content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 3px; height: 8px; background: var(--primary); border-radius: 2px; animation: scrollBounce 1.8s infinite; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes scrollBounce { 0%,100% { transform: translateX(-50%) translateY(0); opacity: 1; } 50% { transform: translateX(-50%) translateY(8px); opacity: .3; } }
+
+    section { padding: clamp(4rem,8vw,7rem) clamp(1.2rem,4vw,3rem); }
+    .section-label { font-size: .7rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); margin-bottom: .8rem; }
+    .section-title { font-family: var(--font-display); font-size: clamp(2rem,5vw,3.5rem); letter-spacing: 2px; margin-bottom: 1rem; }
+    .section-desc { color: var(--gray); font-size: .95rem; font-weight: 300; max-width: 550px; line-height: 1.7; }
+    .reveal { opacity: 0; transform: translateY(40px); transition: all .7s cubic-bezier(.22,1,.36,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .services { background: var(--dark); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .service-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 2rem; transition: all .35s; position: relative; overflow: hidden; }
+    .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--primary); transform: scaleX(0); transition: transform .35s; }
+    .service-card:hover { transform: translateY(-4px); border-color: rgba(37,150,190,.2); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(37,150,190,.1); margin-bottom: 1.2rem; }
+    .service-icon svg { width: 24px; height: 24px; stroke: var(--primary); fill: none; stroke-width: 1.5; }
+    .service-card h3 { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 1px; margin-bottom: .5rem; }
+    .service-card p { color: var(--gray); font-size: .85rem; font-weight: 300; line-height: 1.6; margin-bottom: 1rem; }
+    .service-price { font-family: var(--font-display); font-size: 1.6rem; color: var(--primary); }
+    .service-price small { font-family: var(--font-body); font-size: .7rem; color: var(--gray); }
+
+    .about { background: var(--black); display: flex; flex-wrap: wrap; gap: 3rem; align-items: center; }
+    .about-text { flex: 1 1 400px; }
+    .about-text p { color: var(--gray); font-size: .95rem; font-weight: 300; line-height: 1.8; margin-top: 1.5rem; }
+    .about-right { flex: 1 1 380px; display: flex; flex-direction: column; gap: 1.5rem; }
+    .owner-photo { position: relative; border-radius: 12px; overflow: hidden; width: 100%; }
+    .owner-photo-bg { display: none; }
+    .owner-photo-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 50%, rgba(10,10,10,.88) 100%); display: flex; align-items: flex-end; padding: 1.5rem; border-radius: 0 0 12px 12px; }
+    .owner-badge { display: flex; flex-direction: column; gap: .3rem; }
+    .owner-title { font-size: .7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); border: 1px solid var(--primary); display: inline-block; padding: .35rem .9rem; border-radius: 3px; }
+    .about-stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+    .stat-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 1.5rem; text-align: center; }
+    .stat-num { font-family: var(--font-display); font-size: 2.5rem; color: var(--primary); line-height: 1; }
+    .stat-label { font-size: .75rem; color: var(--gray); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; margin-top: .4rem; }
+
+    .reviews { background: var(--dark); }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .review-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 2rem; transition: border-color .3s; }
+    .review-card:hover { border-color: rgba(37,150,190,.2); }
+    .review-stars { color: #f0b429; font-size: .9rem; margin-bottom: .8rem; letter-spacing: 2px; }
+    .review-text { color: var(--light-gray); font-size: .9rem; font-weight: 300; line-height: 1.7; font-style: italic; margin-bottom: 1.2rem; }
+    .review-author { font-weight: 600; font-size: .8rem; letter-spacing: .5px; }
+    .reviews-cta { margin-top: 2.5rem; text-align: center; }
+
+    .gallery { background: var(--black); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: .8rem; margin-top: 3rem; }
+    .gallery-item { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 1; cursor: pointer; }
+    .gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.08); }
+    .gallery-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 50%,rgba(10,10,10,.6)); opacity: 0; transition: opacity .3s; }
+    .gallery-item:hover::after { opacity: 1; }
+    .gallery-item .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; background: rgba(0,0,0,.5); border: 2px solid rgba(255,255,255,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; pointer-events: none; transition: all .3s; }
+    .gallery-item:hover .play-icon { background: var(--primary); border-color: var(--primary); }
+    .play-icon svg { width: 20px; height: 20px; fill: white; margin-left: 3px; }
+    .gallery-loading { text-align: center; padding: 3rem; color: var(--gray); font-size: .9rem; }
+    .gallery-loading .spinner { width: 30px; height: 30px; border: 3px solid var(--dark3); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 1rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+    .lightbox.open { display: flex; }
+    .lightbox img, .lightbox video { max-width: 90vw; max-height: 85vh; border-radius: 8px; object-fit: contain; }
+    .lightbox-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background .25s; }
+    .lightbox-close:hover { background: rgba(255,255,255,.1); }
+
+    .contact { background: var(--dark); }
+    .contact-grid { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 3rem; }
+    .contact-info { flex: 1 1 300px; }
+    .contact-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; }
+    .contact-item-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(37,150,190,.1); flex-shrink: 0; }
+    .contact-item-icon svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 1.5; }
+    .contact-item h4 { font-size: .85rem; font-weight: 600; margin-bottom: .3rem; }
+    .contact-item p, .contact-item a { color: var(--gray); font-size: .85rem; font-weight: 300; text-decoration: none; transition: color .25s; }
+    .contact-item a:hover { color: var(--primary); }
+    .contact-map { flex: 1 1 400px; border-radius: 8px; overflow: hidden; min-height: 300px; border: 1px solid rgba(255,255,255,.05); }
+    .contact-map iframe { width: 100%; height: 100%; min-height: 300px; border: 0; filter: grayscale(.8) invert(.92) contrast(1.1); }
+
+    .footer { background: var(--black); border-top: 1px solid rgba(255,255,255,.06); padding: 3rem clamp(1.2rem,4vw,3rem) 2rem; }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .footer-brand .nav-logo { display: block; margin-bottom: .5rem; }
+    .footer-brand p { color: var(--gray); font-size: .8rem; font-weight: 300; }
+    .footer-links h4 { font-size: .75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin-bottom: .8rem; }
+    .footer-links a { display: block; color: var(--gray); font-size: .8rem; text-decoration: none; margin-bottom: .5rem; transition: color .25s; }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-social { display: flex; gap: .8rem; }
+    .footer-social a { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.1); border-radius: 6px; transition: all .25s; }
+    .footer-social a:hover { border-color: var(--primary); background: rgba(37,150,190,.1); }
+    .footer-social svg { width: 18px; height: 18px; fill: var(--white); }
+    .footer-bottom { text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.06); color: var(--gray); font-size: .75rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    @media (max-width: 600px) { .about-stats { grid-template-columns: 1fr 1fr; } .gallery-grid { grid-template-columns: repeat(2,1fr); gap: .5rem; } .gallery-item .play-icon { width: 36px; height: 36px; } .play-icon svg { width: 14px; height: 14px; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">NEXT LEVEL <span>BARBERSHOP</span></a>
+  <ul class="nav-links">
+    <li><a href="#hero" data-es="Inicio" data-en="Home">Home</a></li>
+    <li><a href="#services" data-es="Servicios" data-en="Services">Services</a></li>
+    <li><a href="#reviews" data-es="Reseñas" data-en="Reviews">Reviews</a></li>
+    <li><a href="#gallery" data-es="Galería" data-en="Gallery">Gallery</a></li>
+    <li><a href="#contact" data-es="Contacto" data-en="Contact">Contact</a></li>
+    <li><button class="lang-toggle" onclick="toggleLang()">ES | <span class="active-lang">EN</span></button></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#hero" onclick="closeMenu()" data-es="Inicio" data-en="Home">Home</a>
+  <a href="#services" onclick="closeMenu()" data-es="Servicios" data-en="Services">Services</a>
+  <a href="#reviews" onclick="closeMenu()" data-es="Reseñas" data-en="Reviews">Reviews</a>
+  <a href="#gallery" onclick="closeMenu()" data-es="Galería" data-en="Gallery">Gallery</a>
+  <a href="#contact" onclick="closeMenu()" data-es="Contacto" data-en="Contact">Contact</a>
+  <button class="lang-toggle" onclick="toggleLang()">ES | <span class="active-lang">EN</span></button>
+</div>
+
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge" data-es="Barbería Premium" data-en="Premium Barbershop">Premium Barbershop</div>
+    <h1>NEXT LEVEL <span>CUTS</span></h1>
+    <p class="hero-sub" data-es="Calidad, precisión y estilo" data-en="Precision, quality, and style">Precision, quality, and style</p>
+    <div class="hero-btns">
+      <a href="tel:+12393477992" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        <span data-es="Llamar Ahora" data-en="Call Now">Call Now</span>
+      </a>
+      <a href="#contact" class="btn btn-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span data-es="Reservar Cita" data-en="Book Appointment">Book Appointment</span>
+      </a>
+    </div>
+  </div>
+  <div class="scroll-indicator"><span></span></div>
+</section>
+
+<section class="services" id="services">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" data-es="Nuestros Servicios" data-en="Our Services">Our Services</p>
+      <h2 class="section-title" data-es="Lo Que Ofrecemos" data-en="What We Offer">What We Offer</h2>
+      <p class="section-desc" data-es="Cada corte es una experiencia personalizada, con atención al detalle y técnicas de primer nivel." data-en="Every cut is a personalized experience, with attention to detail and top-tier techniques.">Every cut is a personalized experience, with attention to detail and top-tier techniques.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M8.12 8.12L12 12m0 0l3.88-3.88M12 12l-3.88 3.88M12 12l3.88 3.88"/></svg></div>
+        <h3 data-es="Cortes de Cabello" data-en="Haircuts">Haircuts</h3>
+        <p data-es="Cortes clásicos y modernos adaptados a tu estilo personal." data-en="Classic and modern cuts tailored to your personal style.">Classic and modern cuts tailored to your personal style.</p>
+        <div class="service-price">$25+ <small data-es="desde" data-en="starting">starting</small></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4M4 7l8 4M4 7v10l8 4m0-10v10"/></svg></div>
+        <h3>Fades</h3>
+        <p data-es="Low, mid y high fades con transiciones perfectas y precisas." data-en="Low, mid, and high fades with perfect, precise transitions.">Low, mid, and high fades with perfect, precise transitions.</p>
+        <div class="service-price">$30+ <small data-es="desde" data-en="starting">starting</small></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-6.88 17.23C6.71 16.29 9.18 14.5 12 14.5s5.29 1.79 6.88 4.73A10 10 0 0012 2z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3 data-es="Arreglo de Barba" data-en="Beard Trim">Beard Trim</h3>
+        <p data-es="Perfilado, recorte y líneas definidas para una barba impecable." data-en="Shaping, trimming, and defined lines for a flawless beard.">Shaping, trimming, and defined lines for a flawless beard.</p>
+        <div class="service-price">$15+ <small data-es="desde" data-en="starting">starting</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-text reveal">
+    <p class="section-label" data-es="Sobre Nosotros" data-en="About Us">About Us</p>
+    <h2 class="section-title" data-es="Más Que Una Barbería" data-en="More Than A Barbershop">More Than A Barbershop</h2>
+    <p data-es="En Next Level Barber Shop nos dedicamos a ofrecer cortes de la más alta calidad con un servicio profesional y confiable. Cada cliente es tratado con atención personalizada en un ambiente cómodo y moderno. Tu look, nuestro compromiso." data-en="At Next Level Barber Shop, we're dedicated to delivering the highest quality cuts with professional, reliable service. Every client is treated with personalized attention in a comfortable, modern atmosphere. Your look, our commitment.">At Next Level Barber Shop, we're dedicated to delivering the highest quality cuts with professional, reliable service. Every client is treated with personalized attention in a comfortable, modern atmosphere. Your look, our commitment.</p>
+  </div>
+  <div class="about-right reveal">
+    <div class="owner-photo">
+      <img id="ownerImg" src="images/2.jpg" alt="Owner - Next Level Barbershop" style="width:100%;height:auto;display:block;border-radius:12px;">
+      <div class="owner-photo-overlay">
+        <div class="owner-badge">
+          <span class="owner-title" data-es="Dueño &amp; Master Barber" data-en="Owner &amp; Master Barber">Owner &amp; Master Barber</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card"><div class="stat-num">103+</div><div class="stat-label" data-es="Reseñas Google" data-en="Google Reviews">Google Reviews</div></div>
+      <div class="stat-card"><div class="stat-num">4.8</div><div class="stat-label" data-es="Estrellas Google" data-en="Google Stars">Google Stars</div></div>
+      <div class="stat-card"><div class="stat-num">97%</div><div class="stat-label" data-es="Satisfacción" data-en="Satisfaction">Satisfaction</div></div>
+      <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label" data-es="Años de Experiencia" data-en="Years Experience">Years Experience</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" data-es="Reseñas" data-en="Reviews">Reviews</p>
+      <h2 class="section-title" data-es="Lo Que Dicen Nuestros Clientes" data-en="What Our Clients Say">What Our Clients Say</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Mario muy buena atención, estoy muy contento con su servicio."</p><p class="review-author">— Fernando Borroto</p></div>
+      <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Siempre que voy a la barbería salgo más que satisfecho."</p><p class="review-author">— Josue Hernández</p></div>
+      <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"I've been to many barbershops in Cape Coral and was almost always dissatisfied with the haircut. Since Next Level opened, I've become a regular customer. The service is spectacular and the haircut is the best you'll find in the entire city. I highly recommend it."</p><p class="review-author">— Google Review</p></div>
+      <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Jeffrey P gave me one of the best cuts I have ever had. Very clean, neat lines, not too short and well-blended longer hair with the newly cut hair."</p><p class="review-author">— Jeff Nicholson</p></div>
+    </div>
+    <div class="reviews-cta reveal">
+      <a href="https://www.google.com/maps/place/Next+Level+Barber+Shop/@26.6484834,-81.9753487,17z/data=!4m6!3m5!1s0x88db47fc4572d10d:0xff912e4554887962!8m2!3d26.6484834!4d-81.9753487!16s%2Fg%2F11kqlnl8ps?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span data-es="Dejar Reseña" data-en="Leave a Review">Leave a Review</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" data-es="Galería" data-en="Gallery">Gallery</p>
+      <h2 class="section-title" data-es="Nuestro Trabajo" data-en="Our Work">Our Work</h2>
+      <p class="section-desc" data-es="Resultados que hablan por sí solos." data-en="Results that speak for themselves.">Results that speak for themselves.</p>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-loading" id="galleryLoading">
+        <div class="spinner"></div>
+        <span data-es="Cargando galería..." data-en="Loading gallery...">Loading gallery...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+  <div id="lightboxContent"></div>
+</div>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" data-es="Contacto" data-en="Contact">Contact</p>
+      <h2 class="section-title" data-es="Visítanos" data-en="Visit Us">Visit Us</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+          <div><h4 data-es="Teléfono" data-en="Phone">Phone</h4><a href="tel:+12393477992">+1 (239) 347-7992</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><h4 data-es="Ubicación" data-en="Location">Location</h4><p>140 Santa Barbara Blvd S, Suite 118<br>Cape Coral, FL 33991</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><h4 data-es="Horario" data-en="Hours">Hours</h4><p data-es="Lun – Vie: 9:30AM – 7PM<br>Sábado: 9AM – 6PM<br>Domingo: 10AM – 2PM" data-en="Mon – Fri: 9:30AM – 7PM<br>Saturday: 9AM – 6PM<br>Sunday: 10AM – 2PM">Lun – Vie: 9:30AM – 7PM<br>Sábado: 9AM – 6PM<br>Domingo: 10AM – 2PM</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div><h4 data-es="Reservaciones" data-en="Appointments">Appointments</h4><p data-es="Citas y walk-ins bienvenidos" data-en="Appointments and walk-ins welcome">Appointments and walk-ins welcome</p></div>
+        </div>
+      </div>
+      <div class="contact-map reveal">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3569.5!2d-81.9775!3d26.6485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88db47fc4572d10d%3A0xff912e4554887962!2sNext%20Level%20Barber%20Shop!5e0!3m2!1sen!2sus!4v1700000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">NEXT LEVEL <span>BARBERSHOP</span></a>
+      <p data-es="Calidad, precisión y estilo." data-en="Precision, quality, and style.">Precision, quality, and style.</p>
+    </div>
+    <div class="footer-links">
+      <h4 data-es="Navegación" data-en="Navigation">Navigation</h4>
+      <a href="#hero" data-es="Inicio" data-en="Home">Home</a>
+      <a href="#services" data-es="Servicios" data-en="Services">Services</a>
+      <a href="#reviews" data-es="Reseñas" data-en="Reviews">Reviews</a>
+      <a href="#contact" data-es="Contacto" data-en="Contact">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4 data-es="Contacto" data-en="Contact">Contact</h4>
+      <a href="tel:+12393477992">+1 (239) 347-7992</a>
+      <a href="https://www.google.com/maps/place/Next+Level+Barber+Shop/@26.6484834,-81.9753487,17z/data=!4m6!3m5!1s0x88db47fc4572d10d:0xff912e4554887962!8m2!3d26.6484834!4d-81.9753487!16s%2Fg%2F11kqlnl8ps?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" data-es="Dejar Reseña" data-en="Leave a Review">Leave a Review</a>
+    </div>
+    <div>
+      <h4 style="font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:.8rem;" data-es="Síguenos" data-en="Follow Us">Follow Us</h4>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Next Level Barber Shop. <span data-es="Todos los derechos reservados." data-en="All rights reserved.">All rights reserved.</span> | <span data-es="Diseñado por" data-en="Designed by">Designed by</span> Damocles</div>
+</footer>
+
+<script>
+let currentLang = 'en';
+function toggleLang() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll('[data-es]').forEach(el => { const t = el.getAttribute('data-' + currentLang); if (t) el.innerHTML = t; });
+  document.querySelectorAll('.lang-toggle').forEach(btn => { btn.innerHTML = currentLang === 'es' ? '<span class="active-lang">ES</span> | EN' : 'ES | <span class="active-lang">EN</span>'; });
+}
+// Cache-bust owner photo on every load
+(function() {
+  const ts = Date.now();
+  const img = document.getElementById('ownerImg');
+  if (img) img.src = 'images/2.jpg?v=' + ts;
+})();
+
+window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50); });
+document.querySelector('.hero').classList.add('visible');
+function toggleMenu() { document.getElementById('hamburger').classList.toggle('active'); document.getElementById('mobileNav').classList.toggle('open'); document.body.style.overflow = document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : ''; }
+function closeMenu() { document.getElementById('hamburger').classList.remove('active'); document.getElementById('mobileNav').classList.remove('open'); document.body.style.overflow = ''; }
+const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function openLightbox(item) {
+  const lb = document.getElementById('lightbox'), content = document.getElementById('lightboxContent'), media = item.querySelector('img, video');
+  if (media.tagName === 'VIDEO') { const v = document.createElement('video'); v.src = media.src; v.controls = true; v.autoplay = true; v.playsInline = true; v.style.cssText = 'max-width:90vw;max-height:85vh;border-radius:8px'; content.innerHTML = ''; content.appendChild(v); }
+  else { content.innerHTML = '<img src="' + media.src + '" alt="" />'; }
+  lb.classList.add('open'); document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) { if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; const v = document.querySelector('#lightboxContent video'); if (v) v.pause(); } }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; } });
+
+// ─── GALLERY: static file list ───
+(function() {
+  const grid = document.getElementById('galleryGrid'), loading = document.getElementById('galleryLoading');
+  const files = [
+    'PHOTO-2026-03-25-10-53-52.jpg','IMG_9067.jpg','IMG_9936.jpg','IMG_9835.jpg',
+    'IMG_0014.jpg','IMG_9995.jpg','IMG_0086.jpg','IMG_0179.jpg','IMG_0105.jpg',
+    'IMG_0360.jpg','IMG_0565.jpg','44f1fcfa-cbb8-43bd-8895-865989360410.jpg',
+    'd94baeb9-9762-4bcb-996c-548de174bf5d.jpg','cae39957-a6b0-4812-8e63-ed55de8829b6.jpg',
+    'c712000c-c076-4417-957c-eaed72cc34a2.jpg','275e03bc-9a04-4da9-9a59-239a411db7bb.jpg',
+    '44bbd053-026f-4709-b59a-a75664370b95.jpg','a4a903bd-fad5-4177-abeb-037476e896d6.jpg',
+    'ec2eb1cf-fd80-4988-a5ce-8be31d9da084.jpg','copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.jpg',
+    'copy_802AA5CC-C893-4EEB-BA81-661093BA3870.jpg','f480aeae-583b-4bee-80e3-4aa4a57b32b4.jpg',
+    'IMG_9747.jpg','89661273-4de7-4729-98a7-6766125aafe1.jpg',
+    '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.jpg','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.jpg',
+    '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.jpg','84602367-2016-40ff-8286-05ed95bbfbe5.jpg',
+    'af971262-6319-4b8e-b1cc-0be6dd20509d.jpg','a490c7a8-42df-413a-9618-d4819512e134.jpg',
+    'IMG_0034.mov','IMG_0530.mov','IMG_0571.mov','49f628212c564299a1e4a35c53f9fe82.mov','IMG_0586.mov'
+  ];
+  const vidExts = ['mov','mp4','webm'];
+  loading.remove();
+  files.forEach((file, i) => {
+    const ext = file.split('.').pop().toLowerCase(), isVid = vidExts.includes(ext);
+    const item = document.createElement('div');
+    item.className = 'gallery-item reveal';
+    item.onclick = function() { openLightbox(this); };
+    item.innerHTML = isVid
+      ? '<video src="images/cuts/' + file + '" autoplay muted loop playsinline></video><div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>'
+      : '<img src="images/cuts/' + file + '" alt="Haircut ' + (i+1) + '" loading="lazy">';
+    grid.appendChild(item);
+    observer.observe(item);
+  });
+})();
+</script>
+</body>
+</html>
