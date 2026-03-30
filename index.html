@@ -6,7 +6,9 @@
   <meta name="description" content="Next Level Barber Shop – Cortes de otro nivel. Citas y walk-ins. 140 Santa Barbara Blvd S, Suite 118, Cape Coral, FL 33991.">
   <title>Next Level Barber Shop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="preload" as="image" href="images/1.jpg">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -14,8 +16,8 @@
       --primary-glow: rgba(37,150,190,.35);
       --black: #0a0a0a; --dark: #111; --dark2: #1a1a1a; --dark3: #222;
       --white: #f5f5f5; --gray: #999; --light-gray: #ccc;
-      --font-display: 'Bebas Neue', sans-serif;
-      --font-body: 'Outfit', sans-serif;
+      --font-display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+      --font-body: 'Outfit', 'Segoe UI', Arial, sans-serif;
       --nav-h: 70px;
     }
     html { scroll-behavior: smooth; }
@@ -107,18 +109,18 @@
     .reviews-cta { margin-top: 2.5rem; text-align: center; }
 
     .gallery { background: var(--black); }
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: .8rem; margin-top: 3rem; }
-    .gallery-item { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 1; cursor: pointer; }
-    .gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
-    .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.08); }
-    .gallery-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 50%,rgba(10,10,10,.6)); opacity: 0; transition: opacity .3s; }
-    .gallery-item:hover::after { opacity: 1; }
-    .gallery-item .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; background: rgba(0,0,0,.5); border: 2px solid rgba(255,255,255,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; pointer-events: none; transition: all .3s; }
-    .gallery-item:hover .play-icon { background: var(--primary); border-color: var(--primary); }
+    .gallery-carousel { position: relative; overflow: hidden; margin-top: 3rem; -webkit-mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); }
+    .gallery-track { display: flex; gap: .85rem; width: max-content; animation: galleryScroll 55s linear infinite; }
+    .gallery-track:hover { animation-play-state: paused; }
+    @keyframes galleryScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .gallery-slide { width: 260px; height: 260px; flex-shrink: 0; border-radius: 8px; overflow: hidden; cursor: pointer; position: relative; }
+    .gallery-slide img, .gallery-slide video { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; display: block; }
+    .gallery-slide:hover img, .gallery-slide:hover video { transform: scale(1.06); }
+    .gallery-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 50%,rgba(10,10,10,.6)); opacity: 0; transition: opacity .3s; }
+    .gallery-slide:hover::after { opacity: 1; }
+    .gallery-slide .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; background: rgba(0,0,0,.5); border: 2px solid rgba(255,255,255,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; pointer-events: none; transition: all .3s; }
+    .gallery-slide:hover .play-icon { background: var(--primary); border-color: var(--primary); }
     .play-icon svg { width: 20px; height: 20px; fill: white; margin-left: 3px; }
-    .gallery-loading { text-align: center; padding: 3rem; color: var(--gray); font-size: .9rem; }
-    .gallery-loading .spinner { width: 30px; height: 30px; border: 3px solid var(--dark3); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 1rem; }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
     .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
     .lightbox.open { display: flex; }
@@ -151,7 +153,7 @@
     .footer-social svg { width: 18px; height: 18px; fill: var(--white); }
     .footer-bottom { text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.06); color: var(--gray); font-size: .75rem; }
     .container { max-width: 1200px; margin: 0 auto; }
-    @media (max-width: 600px) { .about-stats { grid-template-columns: 1fr 1fr; } .gallery-grid { grid-template-columns: repeat(2,1fr); gap: .5rem; } .gallery-item .play-icon { width: 36px; height: 36px; } .play-icon svg { width: 14px; height: 14px; } }
+    @media (max-width: 600px) { .about-stats { grid-template-columns: 1fr 1fr; } .gallery-slide { width: 180px; height: 180px; } .gallery-slide .play-icon { width: 36px; height: 36px; } .play-icon svg { width: 14px; height: 14px; } }
   </style>
 </head>
 <body>
@@ -237,7 +239,7 @@
   </div>
   <div class="about-right reveal">
     <div class="owner-photo">
-      <img id="ownerImg" src="images/2.jpg" alt="Owner - Next Level Barbershop" style="width:100%;height:auto;display:block;border-radius:12px;">
+      <img id="ownerImg" src="images/2.jpg" alt="Owner - Next Level Barbershop" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
       <div class="owner-photo-overlay">
         <div class="owner-badge">
           <span class="owner-title" data-es="Dueño &amp; Master Barber" data-en="Owner &amp; Master Barber">Owner &amp; Master Barber</span>
@@ -281,11 +283,7 @@
       <h2 class="section-title" data-es="Nuestro Trabajo" data-en="Our Work">Our Work</h2>
       <p class="section-desc" data-es="Resultados que hablan por sí solos." data-en="Results that speak for themselves.">Results that speak for themselves.</p>
     </div>
-    <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-loading" id="galleryLoading">
-        <div class="spinner"></div>
-        <span data-es="Cargando galería..." data-en="Loading gallery...">Loading gallery...</span>
-      </div>
+    <div class="gallery-carousel" id="galleryGrid">
     </div>
   </div>
 </section>
@@ -364,12 +362,6 @@ function toggleLang() {
   document.querySelectorAll('[data-es]').forEach(el => { const t = el.getAttribute('data-' + currentLang); if (t) el.innerHTML = t; });
   document.querySelectorAll('.lang-toggle').forEach(btn => { btn.innerHTML = currentLang === 'es' ? '<span class="active-lang">ES</span> | EN' : 'ES | <span class="active-lang">EN</span>'; });
 }
-// Cache-bust owner photo on every load
-(function() {
-  const ts = Date.now();
-  const img = document.getElementById('ownerImg');
-  if (img) img.src = 'images/2.jpg?v=' + ts;
-})();
 
 window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50); });
 document.querySelector('.hero').classList.add('visible');
@@ -387,37 +379,44 @@ function openLightbox(item) {
 function closeLightbox(e) { if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; const v = document.querySelector('#lightboxContent video'); if (v) v.pause(); } }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; } });
 
-// ─── GALLERY: static file list ───
+// ─── GALLERY: infinite carousel ───
 (function() {
-  const grid = document.getElementById('galleryGrid'), loading = document.getElementById('galleryLoading');
+  const wrap = document.getElementById('galleryGrid');
   const files = [
-    'PHOTO-2026-03-25-10-53-52.jpg','IMG_9067.jpg','IMG_9936.jpg','IMG_9835.jpg',
-    'IMG_0014.jpg','IMG_9995.jpg','IMG_0086.jpg','IMG_0179.jpg','IMG_0105.jpg',
-    'IMG_0360.jpg','IMG_0565.jpg','44f1fcfa-cbb8-43bd-8895-865989360410.jpg',
-    'd94baeb9-9762-4bcb-996c-548de174bf5d.jpg','cae39957-a6b0-4812-8e63-ed55de8829b6.jpg',
-    'c712000c-c076-4417-957c-eaed72cc34a2.jpg','275e03bc-9a04-4da9-9a59-239a411db7bb.jpg',
-    '44bbd053-026f-4709-b59a-a75664370b95.jpg','a4a903bd-fad5-4177-abeb-037476e896d6.jpg',
-    'ec2eb1cf-fd80-4988-a5ce-8be31d9da084.jpg','copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.jpg',
-    'copy_802AA5CC-C893-4EEB-BA81-661093BA3870.jpg','f480aeae-583b-4bee-80e3-4aa4a57b32b4.jpg',
-    'IMG_9747.jpg','89661273-4de7-4729-98a7-6766125aafe1.jpg',
-    '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.jpg','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.jpg',
-    '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.jpg','84602367-2016-40ff-8286-05ed95bbfbe5.jpg',
-    'af971262-6319-4b8e-b1cc-0be6dd20509d.jpg','a490c7a8-42df-413a-9618-d4819512e134.jpg',
-    'IMG_0034.mov','IMG_0530.mov','IMG_0571.mov','49f628212c564299a1e4a35c53f9fe82.mov','IMG_0586.mov'
+    'PHOTO-2026-03-25-10-53-52.webp','IMG_9067.webp','IMG_9936.webp','IMG_9835.webp',
+    'IMG_0014.webp','IMG_9995.webp','IMG_0086.webp','IMG_0179.webp','IMG_0105.webp',
+    'IMG_0360.webp','IMG_0565.webp','44f1fcfa-cbb8-43bd-8895-865989360410.webp',
+    'd94baeb9-9762-4bcb-996c-548de174bf5d.webp','cae39957-a6b0-4812-8e63-ed55de8829b6.webp',
+    'c712000c-c076-4417-957c-eaed72cc34a2.webp','275e03bc-9a04-4da9-9a59-239a411db7bb.webp',
+    'a4a903bd-fad5-4177-abeb-037476e896d6.webp','ec2eb1cf-fd80-4988-a5ce-8be31d9da084.webp',
+    'copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.webp','copy_802AA5CC-C893-4EEB-BA81-661093BA3870.webp',
+    'f480aeae-583b-4bee-80e3-4aa4a57b32b4.webp','IMG_9747.webp','89661273-4de7-4729-98a7-6766125aafe1.webp',
+    '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.webp','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.webp',
+    '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.webp','84602367-2016-40ff-8286-05ed95bbfbe5.webp',
+    'af971262-6319-4b8e-b1cc-0be6dd20509d.webp','a490c7a8-42df-413a-9618-d4819512e134.webp',
+    'IMG_0034.mp4','IMG_0530.mp4','IMG_0571.mp4','49f628212c564299a1e4a35c53f9fe82.mp4','IMG_0586.mp4'
   ];
-  const vidExts = ['mov','mp4','webm'];
-  loading.remove();
-  files.forEach((file, i) => {
+  const vidExts = ['mp4','webm'];
+  const track = document.createElement('div');
+  track.className = 'gallery-track';
+
+  function makeSlide(file, i) {
     const ext = file.split('.').pop().toLowerCase(), isVid = vidExts.includes(ext);
-    const item = document.createElement('div');
-    item.className = 'gallery-item reveal';
-    item.onclick = function() { openLightbox(this); };
-    item.innerHTML = isVid
-      ? '<video src="images/cuts/' + file + '" autoplay muted loop playsinline></video><div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>'
-      : '<img src="images/cuts/' + file + '" alt="Haircut ' + (i+1) + '" loading="lazy">';
-    grid.appendChild(item);
-    observer.observe(item);
-  });
+    const slide = document.createElement('div');
+    slide.className = 'gallery-slide';
+    slide.onclick = function() { openLightbox(this); };
+    if (isVid) {
+      slide.innerHTML = '<video src="images/cuts/' + file + '" muted loop playsinline preload="none"></video><div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>';
+    } else {
+      slide.innerHTML = '<img src="images/cuts/' + file + '" alt="Haircut ' + (i+1) + '" loading="lazy" decoding="async">';
+    }
+    return slide;
+  }
+
+  // Build slides + duplicate set for seamless infinite loop
+  files.forEach((file, i) => track.appendChild(makeSlide(file, i)));
+  files.forEach((file, i) => { const c = makeSlide(file, i); c.setAttribute('aria-hidden','true'); track.appendChild(c); });
+  wrap.appendChild(track);
 })();
 </script>
 </body>
