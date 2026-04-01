@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS reviews (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  uuid TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  body TEXT NOT NULL,
+  stars INTEGER NOT NULL CHECK(stars >= 1 AND stars <= 5),
+  created_at TEXT NOT NULL
+);
