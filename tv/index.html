@@ -326,26 +326,12 @@
   const INTERVAL   = 8000;  // ms entre slides
   const FADE_OUT   = 900;   // ms — esperar a que termine el fade-out antes de borrar
   const BASE_PATH  = '/images/cuts/';
+  const MANIFEST   = BASE_PATH + 'manifest.json';
 
-  // ── WebP: archivos más livianos = carga más rápida ──
-  const files = [
-    'PHOTO-2026-03-25-10-53-52.webp','IMG_9067.webp','IMG_9936.webp','IMG_9835.webp',
-    'IMG_0014.webp','IMG_9995.webp','IMG_0086.webp','IMG_0179.webp','IMG_0105.webp',
-    'IMG_0360.webp','IMG_0565.webp','44f1fcfa-cbb8-43bd-8895-865989360410.webp',
-    'd94baeb9-9762-4bcb-996c-548de174bf5d.webp','cae39957-a6b0-4812-8e63-ed55de8829b6.webp',
-    'c712000c-c076-4417-957c-eaed72cc34a2.webp','275e03bc-9a04-4da9-9a59-239a411db7bb.webp',
-    'a4a903bd-fad5-4177-abeb-037476e896d6.webp',
-    'ec2eb1cf-fd80-4988-a5ce-8be31d9da084.webp','copy_7248CC17-4C2C-496B-8E89-0B85C3603F47.webp',
-    'copy_802AA5CC-C893-4EEB-BA81-661093BA3870.webp','f480aeae-583b-4bee-80e3-4aa4a57b32b4.webp',
-    'IMG_9747.webp','89661273-4de7-4729-98a7-6766125aafe1.webp',
-    '1ef67bae-fc2b-4dab-a206-84023c7d4c7e.webp','85ab84e5-8f98-4a01-a1eb-695da8a8d4e4.webp',
-    '3c670b17-eccc-404c-a8f3-d9d6beaf78b8.webp','84602367-2016-40ff-8286-05ed95bbfbe5.webp',
-    'af971262-6319-4b8e-b1cc-0be6dd20509d.webp','a490c7a8-42df-413a-9618-d4819512e134.webp'
-  ];
-
-  let imgIdx   = 0;
+  let files     = [];
+  let imgIdx    = 0;
   let panelTurn = 0;
-  const dotCount = Math.min(Math.ceil(files.length / 2), 12);
+  let dotCount  = 0;
 
   // ── Caché de preload: carga TODAS las imágenes al arrancar ──
   // Cuando el navegador ya tiene la imagen en caché, img.decode() es instantáneo
@@ -357,8 +343,6 @@
     img.src = BASE_PATH + filename;
     pool[filename] = img;
   }
-  // Arranca la descarga de todo desde el primer momento
-  files.forEach(warmCache);
 
   // ── Reloj ──
   function tick() {
@@ -456,7 +440,9 @@
   }
 
   // ── Init ──
-  function init() {
+  function start() {
+    dotCount = Math.min(Math.ceil(files.length / 2), 12);
+    files.forEach(warmCache);
     buildDots();
 
     waitForFirst([0, 1], () => {
@@ -467,7 +453,6 @@
       }
 
       swapPanel(document.getElementById('panelA'), files[0], 1);
-      // Panel B con pequeño delay para no saturar el decode al mismo tiempo
       setTimeout(() => swapPanel(document.getElementById('panelB'), files[1], 2), 350);
 
       imgIdx    = 2;
@@ -479,7 +464,14 @@
     });
   }
 
-  init();
+  fetch(MANIFEST)
+    .then(r => r.json())
+    .then(list => { files = list; start(); })
+    .catch(() => {
+      // Fallback: si falla el fetch, muestra error en loader
+      const loader = document.getElementById('loader');
+      if (loader) loader.innerHTML = '<div class="loader-logo">ERROR <span>cargando fotos</span></div>';
+    });
 </script>
 </body>
 </html>
