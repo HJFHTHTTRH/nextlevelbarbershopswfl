@@ -111,6 +111,7 @@
     .review-stars { color: #f0b429; font-size: .8rem; letter-spacing: 3px; margin-bottom: .5rem; }
     .review-text { color: var(--light-gray); font-size: .86rem; font-weight: 300; line-height: 1.7; font-style: italic; margin-bottom: .7rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
     .review-author { font-weight: 600; font-size: .72rem; letter-spacing: 1px; text-transform: uppercase; color: var(--primary); }
+    .review-date { font-size: .7rem; color: var(--gray); margin-top: .3rem; }
 
     /* ── Review Form ── */
     .review-form-wrap { background: var(--dark2); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 2.5rem 2.2rem; flex-shrink: 0; width: 460px; }
@@ -567,11 +568,19 @@ setInterval(updateStatus, 60000);
     return id;
   }
 
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d)) return '';
+    return (d.getMonth()+1).toString().padStart(2,'0') + '/' + d.getDate().toString().padStart(2,'0') + '/' + d.getFullYear();
+  }
+
   function makeCard(r) {
     const stars = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
     const card = document.createElement('div');
     card.className = 'review-card';
-    card.innerHTML = '<div class="review-stars">' + stars + '</div><p class="review-text">"' + r.body.replace(/</g,'&lt;') + '"</p><p class="review-author">— ' + r.name.replace(/</g,'&lt;') + '</p>';
+    const dateHtml = r.created_at ? '<p class="review-date">' + fmtDate(r.created_at) + '</p>' : '';
+    card.innerHTML = '<div class="review-stars">' + stars + '</div><p class="review-text">"' + r.body.replace(/</g,'&lt;') + '"</p><p class="review-author">— ' + r.name.replace(/</g,'&lt;') + '</p>' + dateHtml;
     return card;
   }
 
@@ -641,7 +650,7 @@ setInterval(updateStatus, 60000);
       } else if (data.ok) {
         msg.className = 'rf-msg ok';
         msg.textContent = lang === 'es' ? '¡Gracias por tu reseña!' : 'Thank you for your review!';
-        prependCard({ name, body, stars: selectedStars });
+        prependCard({ name, body, stars: selectedStars, created_at: new Date().toISOString() });
         loadStats();
         this.reset();
         selectedStars = 0;
