@@ -264,9 +264,9 @@
       </div>
     </div>
     <div class="about-stats">
-      <div class="stat-card"><div class="stat-num">103+</div><div class="stat-label" data-es="Reseñas Google" data-en="Google Reviews">Google Reviews</div></div>
-      <div class="stat-card"><div class="stat-num">4.8</div><div class="stat-label" data-es="Estrellas Google" data-en="Google Stars">Google Stars</div></div>
-      <div class="stat-card"><div class="stat-num">97%</div><div class="stat-label" data-es="Satisfacción" data-en="Satisfaction">Satisfaction</div></div>
+      <div class="stat-card"><div class="stat-num" id="statTotal">—</div><div class="stat-label" data-es="Reseñas" data-en="Reviews">Reviews</div></div>
+      <div class="stat-card"><div class="stat-num" id="statAvg">—</div><div class="stat-label" data-es="Estrellas Promedio" data-en="Avg Stars">Avg Stars</div></div>
+      <div class="stat-card"><div class="stat-num" id="statSat">—</div><div class="stat-label" data-es="Satisfacción" data-en="Satisfaction">Satisfaction</div></div>
       <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label" data-es="Años de Experiencia" data-en="Years Experience">Years Experience</div></div>
     </div>
   </div>
@@ -456,6 +456,19 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.g
     })
     .catch(() => {});
 
+  // Live stats
+  function loadStats() {
+    fetch(WORKER_URL + '/stats')
+      .then(r => r.json())
+      .then(s => {
+        document.getElementById('statTotal').textContent = s.total + '+';
+        document.getElementById('statAvg').textContent = s.avg;
+        document.getElementById('statSat').textContent = s.satisfaction + '%';
+      })
+      .catch(() => {});
+  }
+  loadStats();
+
   let selectedStars = 0;
   const starBtns = document.querySelectorAll('#starRow button');
   starBtns.forEach(btn => {
@@ -495,6 +508,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.g
         msg.className = 'rf-msg ok';
         msg.textContent = lang === 'es' ? '¡Gracias por tu reseña!' : 'Thank you for your review!';
         prependCard({ name, body, stars: selectedStars });
+        loadStats();
         this.reset();
         selectedStars = 0;
         starBtns.forEach(b => b.classList.remove('active'));

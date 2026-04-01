@@ -60,9 +60,20 @@ export default {
     // GET /reviews — fetch latest reviews
     if (req.method === 'GET' && url.pathname === '/reviews') {
       const { results } = await env.DB
-        .prepare('SELECT name, body, stars, created_at FROM reviews ORDER BY created_at DESC LIMIT 30')
+        .prepare('SELECT name, body, stars, created_at FROM reviews ORDER BY created_at DESC LIMIT 200')
         .all();
       return json(results);
+    }
+
+    // GET /stats — live counters
+    if (req.method === 'GET' && url.pathname === '/stats') {
+      const row = await env.DB
+        .prepare('SELECT COUNT(*) as total, AVG(stars) as avg_stars, SUM(CASE WHEN stars = 5 THEN 1 ELSE 0 END) as five_star FROM reviews')
+        .first();
+      const total = row.total || 0;
+      const avg = total > 0 ? Math.round(row.avg_stars * 10) / 10 : 0;
+      const satisfaction = total > 0 ? Math.round((row.five_star / total) * 100) : 0;
+      return json({ total, avg, satisfaction });
     }
 
     return new Response('Not found', { status: 404, headers: CORS });
