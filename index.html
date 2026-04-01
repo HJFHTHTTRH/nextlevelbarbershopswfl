@@ -278,7 +278,7 @@
       <p class="section-label" data-es="Reseñas" data-en="Reviews">Reviews</p>
       <h2 class="section-title" data-es="Lo Que Dicen Nuestros Clientes" data-en="What Our Clients Say">What Our Clients Say</h2>
     </div>
-    <div class="reviews-grid">
+    <div class="reviews-grid" id="reviewsGrid">
       <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Mario muy buena atención, estoy muy contento con su servicio."</p><p class="review-author">— Fernando Borroto</p></div>
       <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Siempre que voy a la barbería salgo más que satisfecho."</p><p class="review-author">— Josue Hernández</p></div>
       <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"I've been to many barbershops in Cape Coral and was almost always dissatisfied with the haircut. Since Next Level opened, I've become a regular customer. The service is spectacular and the haircut is the best you'll find in the entire city. I highly recommend it."</p><p class="review-author">— Google Review</p></div>
@@ -433,6 +433,29 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.g
     return id;
   }
 
+  function makeCard(r) {
+    const stars = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    card.style.cssText = 'animation:fadeUp .5s forwards';
+    card.innerHTML = '<div class="review-stars">' + stars + '</div><p class="review-text">"' + r.body.replace(/</g,'&lt;') + '"</p><p class="review-author">— ' + r.name.replace(/</g,'&lt;') + '</p>';
+    return card;
+  }
+
+  function prependCard(r) {
+    const grid = document.getElementById('reviewsGrid');
+    grid.insertBefore(makeCard(r), grid.firstChild);
+  }
+
+  // Load reviews from worker on page load
+  fetch(WORKER_URL + '/reviews')
+    .then(r => r.json())
+    .then(reviews => {
+      const grid = document.getElementById('reviewsGrid');
+      reviews.forEach(r => grid.appendChild(makeCard(r)));
+    })
+    .catch(() => {});
+
   let selectedStars = 0;
   const starBtns = document.querySelectorAll('#starRow button');
   starBtns.forEach(btn => {
@@ -471,6 +494,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.g
       } else if (data.ok) {
         msg.className = 'rf-msg ok';
         msg.textContent = lang === 'es' ? '¡Gracias por tu reseña!' : 'Thank you for your review!';
+        prependCard({ name, body, stars: selectedStars });
         this.reset();
         selectedStars = 0;
         starBtns.forEach(b => b.classList.remove('active'));
