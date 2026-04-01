@@ -114,13 +114,27 @@
     .corner--bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); }
     .corner--br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
 
+    /* fondo desenfocado — llena las barras negras */
+    .panel-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: blur(18px) brightness(.45) saturate(1.2);
+      transform: scale(1.08) translateZ(0);
+      opacity: 0;
+      will-change: opacity;
+      transition: opacity .8s ease;
+      z-index: 0;
+    }
+    .panel-bg.active  { opacity: 1; }
+    .panel-bg.exiting { opacity: 0; }
+
     /* media — fade suave, GPU-composited */
     .panel-media {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: contain;
       opacity: 0;
-      /* will-change le dice al browser que prepare una capa GPU para esta propiedad */
       will-change: opacity;
       transform: translateZ(0);
       transition: opacity .8s ease;
@@ -380,30 +394,40 @@
   // La imagen nueva se decodifica (casi instantáneo desde caché) antes de hacer fade-in.
   // La imagen vieja no se borra hasta DESPUÉS de que la nueva sea visible → sin negro.
   function swapPanel(panel, filename, num) {
-    const old = panel.querySelector('.panel-media.active');
+    const oldMedia = panel.querySelector('.panel-media.active');
+    const oldBg    = panel.querySelector('.panel-bg.active');
+
+    const src = BASE_PATH + filename;
+
+    const bg = document.createElement('img');
+    bg.className = 'panel-bg';
+    bg.alt       = '';
+    bg.decoding  = 'async';
+    bg.src       = src;
 
     const img = document.createElement('img');
     img.className  = 'panel-media';
     img.alt        = '';
     img.decoding   = 'async';
-    img.src        = BASE_PATH + filename;
+    img.src        = src;
 
     const branding = panel.querySelector('.panel-branding');
+    panel.insertBefore(bg, branding);
     panel.insertBefore(img, branding);
 
     const numEl = panel.querySelector('.slide-num');
     if (numEl) numEl.textContent = String(num).padStart(2,'0');
 
-    // Decodificar → fade-in → luego sí quitamos la anterior
     const show = () => {
       requestAnimationFrame(() => {
+        bg.classList.add('active');
         img.classList.add('active');
-        if (old) {
-          old.classList.remove('active');
-          old.classList.add('exiting');
-          // Esperar a que termine el fade-out antes de remover del DOM
-          setTimeout(() => { if (old.parentNode) old.remove(); }, FADE_OUT);
-        }
+        [oldMedia, oldBg].forEach(el => {
+          if (!el) return;
+          el.classList.remove('active');
+          el.classList.add('exiting');
+          setTimeout(() => { if (el.parentNode) el.remove(); }, FADE_OUT);
+        });
       });
     };
 
