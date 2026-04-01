@@ -69,28 +69,6 @@
       position: fixed;
       top: 60px; bottom: 36px;
       left: 0; right: 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    /* divider */
-    .divider {
-      position: fixed;
-      top: 60px; bottom: 36px;
-      left: 50%;
-      width: 3px;
-      background: linear-gradient(180deg, transparent 0%, var(--primary) 20%, var(--primary) 80%, transparent 100%);
-      z-index: 10;
-      opacity: .5;
-    }
-    .divider::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: 12px; height: 12px;
-      background: var(--primary);
-      border-radius: 50%;
     }
 
     /* ── PANEL ── */
@@ -296,10 +274,7 @@
   </div>
 </div>
 
-<!-- Divider -->
-<div class="divider"></div>
-
-<!-- Slideshow: 2 panels -->
+<!-- Slideshow: panel único full-screen -->
 <div class="slideshow">
   <div class="panel" id="panelA">
     <div class="placeholder"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>
@@ -312,20 +287,6 @@
         <div class="brand-sub">Walk-ins Welcome · Cape Coral, FL</div>
       </div>
       <div class="slide-num" id="numA">01</div>
-    </div>
-  </div>
-
-  <div class="panel" id="panelB">
-    <div class="placeholder"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>
-    <div class="panel-overlay"></div>
-    <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
-    <div class="corner corner--bl"></div><div class="corner corner--br"></div>
-    <div class="panel-branding">
-      <div>
-        <div class="brand-logo">NEXT LEVEL <span>CUTS</span></div>
-        <div class="brand-sub">Walk-ins Welcome · Cape Coral, FL</div>
-      </div>
-      <div class="slide-num" id="numB">02</div>
     </div>
   </div>
 </div>
