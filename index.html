@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>html{overflow-y:auto;scrollbar-width:none;}html::-webkit-scrollbar{display:none;}</style>
+  <style>html{overflow-x:hidden;overflow-y:auto;scrollbar-width:none;}html::-webkit-scrollbar{display:none;}</style>
   <meta name="description" content="Best barber shop in Cape Coral & Fort Myers area. Next Level Barber Shop offers expert fades, men's haircuts & beard trims. Walk-ins welcome — call (239) 347-7992. Cape Coral, FL 33991.">
   <title>Next Level Barber Shop | Best Barber Shop in Cape Coral, FL</title>
   <meta name="keywords" content="barber shop Cape Coral, fade haircut Cape Coral, men's haircut Cape Coral, barber near me, best barber in Cape Coral, beard trim Cape Coral, barbershop Cape Coral FL, haircut Cape Coral, barber shop Fort Myers, barber near Fort Myers, fade haircut Fort Myers FL, barbershop North Fort Myers, barber Lee County FL, men's haircut Fort Myers, best barber shop SW Florida">
@@ -49,9 +49,9 @@
       --font-body: 'Outfit', 'Segoe UI', Arial, sans-serif;
       --nav-h: 70px;
     }
-    html { overflow-y: auto; scrollbar-width: none; }
+    html { overflow-x: hidden; overflow-y: auto; scrollbar-width: none; }
     html::-webkit-scrollbar { display: none; }
-    body { font-family: var(--font-body); background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-body); background: var(--black); color: var(--white); -webkit-font-smoothing: antialiased; }
     section, .hero { min-height: 100svh; }
 
     .navbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-h); background: rgba(10,10,10,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1.2rem,4vw,3rem); border-bottom: 1px solid rgba(255,255,255,.06); transition: background .3s; }
@@ -163,7 +163,15 @@
     .review-cta-btn { display: inline-flex; align-items: center; gap: .7rem; background: #fff; color: #333; font-family: var(--font-body); font-weight: 700; font-size: .95rem; border-radius: 8px; padding: .9rem 1.6rem; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 20px rgba(0,0,0,.3); width: 100%; justify-content: center; }
     .review-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
     .review-cta-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
-    @media (max-width: 1000px) { .reviews-layout { flex-direction: column; } .review-cta-wrap { width: 100%; margin-top: 0; } }
+    @media (max-width: 1000px) {
+      .reviews-layout { flex-direction: column-reverse; gap: 1.5rem; margin-top: 1.5rem; }
+      .reviews-left { height: 300px; width: 100%; }
+      .review-cta-wrap { width: 100%; margin-top: 0; }
+      .review-cta-img { max-height: 180px; object-fit: cover; }
+      .review-cta-body { padding: 1.2rem 1.5rem 1.5rem; gap: .8rem; }
+      .review-cta-wrap h3 { font-size: 1.6rem; }
+      .reviews { min-height: unset !important; }
+    }
 
     .gallery-carousel { position: relative; overflow: hidden; -webkit-mask: linear-gradient(90deg,transparent,black 6%,black 94%,transparent); mask: linear-gradient(90deg,transparent,black 6%,black 94%,transparent); }
     .gallery-track { display: flex; gap: 1rem; width: max-content; animation: galleryScroll 55s linear infinite; }
