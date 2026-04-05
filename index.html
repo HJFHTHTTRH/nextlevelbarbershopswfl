@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>html{overflow-y:auto;scrollbar-width:none;}html::-webkit-scrollbar{display:none;}</style>
   <meta name="description" content="Best barber shop in Cape Coral & Fort Myers area. Next Level Barber Shop offers expert fades, men's haircuts & beard trims. Walk-ins welcome — call (239) 347-7992. Cape Coral, FL 33991.">
   <title>Next Level Barber Shop | Best Barber Shop in Cape Coral, FL</title>
   <meta name="keywords" content="barber shop Cape Coral, fade haircut Cape Coral, men's haircut Cape Coral, barber near me, best barber in Cape Coral, beard trim Cape Coral, barbershop Cape Coral FL, haircut Cape Coral, barber shop Fort Myers, barber near Fort Myers, fade haircut Fort Myers FL, barbershop North Fort Myers, barber Lee County FL, men's haircut Fort Myers, best barber shop SW Florida">
@@ -30,9 +31,13 @@
   <meta name="twitter:description" content="Best barber shop serving Cape Coral, Fort Myers & North Fort Myers, FL. Expert fades & men's haircuts. Walk-ins welcome. Call (239) 347-7992.">
   <meta name="twitter:image" content="https://www.nextlevelbarbershopswfl.com/images/1.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
-  <link rel="preload" as="image" href="images/1.jpg">
+  <link rel="preload" as="image" href="images/1.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/services.webp">
+  <meta name="theme-color" content="#0a0a0a">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -44,7 +49,8 @@
       --font-body: 'Outfit', 'Segoe UI', Arial, sans-serif;
       --nav-h: 70px;
     }
-    html { overflow-y: scroll; }
+    html { overflow-y: auto; scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
     body { font-family: var(--font-body); background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
     section, .hero { min-height: 100svh; }
 
@@ -100,17 +106,23 @@
     .services { background: var(--dark); position: relative; overflow: hidden; }
     .services-bg { position: absolute; inset: 0; background: url('images/services.webp') center/cover no-repeat; filter: brightness(.18); }
     .services .container { position: relative; z-index: 1; }
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; margin-top: 3rem; }
-    .service-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 2rem; transition: all .35s; position: relative; overflow: hidden; }
-    .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--primary); transform: scaleX(0); transition: transform .35s; }
-    .service-card:hover { transform: translateY(-4px); border-color: rgba(37,150,190,.2); }
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
+    @media(max-width:768px){ .services-grid { grid-template-columns: 1fr; } }
+    .service-card { background: rgba(26,26,26,.85); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 2.2rem 2rem; transition: all .35s; position: relative; overflow: hidden; backdrop-filter: blur(6px); display: flex; flex-direction: column; }
+    .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); transform: scaleX(0); transition: transform .4s; }
+    .service-card:hover { transform: translateY(-5px); border-color: rgba(37,150,190,.25); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
     .service-card:hover::before { transform: scaleX(1); }
-    .service-icon { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(37,150,190,.1); margin-bottom: 1.2rem; }
+    .service-icon { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(37,150,190,.1); border: 1px solid rgba(37,150,190,.2); margin-bottom: 1.4rem; transition: all .3s; }
+    .service-card:hover .service-icon { background: rgba(37,150,190,.2); border-color: rgba(37,150,190,.4); }
     .service-icon svg { width: 24px; height: 24px; stroke: var(--primary); fill: none; stroke-width: 1.5; }
-    .service-card h3 { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 1px; margin-bottom: .5rem; }
-    .service-card p { color: var(--gray); font-size: .85rem; font-weight: 300; line-height: 1.6; margin-bottom: 1rem; }
-    .service-price { font-family: var(--font-display); font-size: 1.6rem; color: var(--primary); }
+    .service-card h3 { font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 1px; margin-bottom: .6rem; }
+    .service-card p { color: var(--gray); font-size: .85rem; font-weight: 300; line-height: 1.7; margin-bottom: 1.5rem; flex: 1; }
+    .service-price { font-family: var(--font-display); font-size: 1.8rem; color: var(--primary); border-top: 1px solid rgba(255,255,255,.06); padding-top: 1rem; margin-top: auto; }
     .service-price small { font-family: var(--font-body); font-size: .7rem; color: var(--gray); }
+    .services-work-label { display: flex; align-items: center; gap: 1rem; margin-top: 3rem; margin-bottom: 1.2rem; }
+    .services-work-label span { font-size: .68rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); white-space: nowrap; }
+    .services-work-label::before, .services-work-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(37,150,190,.4), transparent); }
+    .services-work-label::before { background: linear-gradient(90deg, transparent, rgba(37,150,190,.4)); }
 
     .about { background: var(--black); display: flex; flex-wrap: wrap; gap: 3rem; align-items: center; }
     .about-text { flex: 1 1 400px; }
@@ -153,19 +165,18 @@
     .review-cta-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
     @media (max-width: 1000px) { .reviews-layout { flex-direction: column; } .review-cta-wrap { width: 100%; margin-top: 0; } }
 
-    .gallery { background: var(--black); }
-    .gallery-carousel { position: relative; overflow: hidden; margin-top: 3rem; -webkit-mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); }
-    .gallery-track { display: flex; gap: .85rem; width: max-content; animation: galleryScroll 55s linear infinite; }
+    .gallery-carousel { position: relative; overflow: hidden; -webkit-mask: linear-gradient(90deg,transparent,black 6%,black 94%,transparent); mask: linear-gradient(90deg,transparent,black 6%,black 94%,transparent); }
+    .gallery-track { display: flex; gap: 1rem; width: max-content; animation: galleryScroll 55s linear infinite; }
     .gallery-track:hover { animation-play-state: paused; }
     @keyframes galleryScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .gallery-slide { width: 260px; height: 260px; flex-shrink: 0; border-radius: 8px; overflow: hidden; cursor: pointer; position: relative; }
+    .gallery-slide { width: 180px; height: 180px; flex-shrink: 0; border-radius: 12px; overflow: hidden; cursor: pointer; position: relative; border: 1px solid rgba(255,255,255,.07); }
     .gallery-slide img, .gallery-slide video { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; display: block; }
-    .gallery-slide:hover img, .gallery-slide:hover video { transform: scale(1.06); }
-    .gallery-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 50%,rgba(10,10,10,.6)); opacity: 0; transition: opacity .3s; }
+    .gallery-slide:hover img, .gallery-slide:hover video { transform: scale(1.08); }
+    .gallery-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 40%,rgba(10,10,10,.7)); opacity: 0; transition: opacity .3s; }
     .gallery-slide:hover::after { opacity: 1; }
-    .gallery-slide .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; background: rgba(0,0,0,.5); border: 2px solid rgba(255,255,255,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; pointer-events: none; transition: all .3s; }
+    .gallery-slide .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 48px; height: 48px; background: rgba(0,0,0,.5); border: 2px solid rgba(255,255,255,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; pointer-events: none; transition: all .3s; }
     .gallery-slide:hover .play-icon { background: var(--primary); border-color: var(--primary); }
-    .play-icon svg { width: 20px; height: 20px; fill: white; margin-left: 3px; }
+    .play-icon svg { width: 18px; height: 18px; fill: white; margin-left: 3px; }
 
     .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
     .lightbox.open { display: flex; }
@@ -181,20 +192,20 @@
     .status-badge.closed .status-dot { background:#f87171; }
     @keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
-    .contact { background: var(--dark); min-height: unset !important; position: relative; padding-bottom: 2.5rem; }
+    .contact { background: var(--dark); min-height: unset !important; position: relative; padding: clamp(1.8rem,3vw,2.5rem) clamp(1.2rem,4vw,3rem) 2rem; }
     .contact::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--primary),transparent); }
 
-    .contact-top { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2.5rem; align-items:stretch; }
-    .contact-bottom { margin-top:2rem; background:var(--dark2); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:1.8rem 2rem; }
+    .contact-top { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem; align-items:stretch; }
+    .contact-bottom { margin-top:1.5rem; background:var(--dark2); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:1.2rem 1.5rem; }
     .contact-cols { display:contents; }
 
-    .contact-block { background:var(--dark2); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:1.8rem 2rem; }
+    .contact-block { background:var(--dark2); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:1.2rem 1.5rem; }
     .contact-block-label { font-size:.65rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--primary); margin-bottom:1.2rem; display:flex; align-items:center; gap:10px; }
     .contact-block-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(37,150,190,.3),transparent); }
 
     /* Week grid */
-    .week-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
-    .day-cell { background:var(--dark3); border:1px solid rgba(255,255,255,.05); border-radius:10px; padding:1rem .4rem; text-align:center; transition:all .25s; }
+    .week-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+    .day-cell { background:var(--dark3); border:1px solid rgba(255,255,255,.05); border-radius:10px; padding:.65rem .4rem; text-align:center; transition:all .25s; }
     .day-cell:hover { border-color:rgba(37,150,190,.25); transform:translateY(-2px); }
     .day-cell.today-cell { background:linear-gradient(160deg,rgba(37,150,190,.22),rgba(37,150,190,.06)); border-color:rgba(37,150,190,.6); box-shadow:0 4px 20px rgba(37,150,190,.15); }
     .dc-abbr { display:block; font-size:.6rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gray); margin-bottom:7px; }
@@ -204,7 +215,7 @@
     .dc-badge { display:inline-block; margin-top:5px; font-size:.48rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--white); background:var(--primary); padding:2px 6px; border-radius:3px; }
 
     /* Info list */
-    .info-list { display:flex; flex-direction:column; gap:1.3rem; }
+    .info-list { display:flex; flex-direction:column; gap:.85rem; }
     .info-item { display:flex; align-items:flex-start; gap:14px; }
     .info-icon { width:40px; height:40px; flex-shrink:0; border-radius:10px; background:rgba(37,150,190,.08); border:1px solid rgba(37,150,190,.2); display:flex; align-items:center; justify-content:center; transition:all .25s; }
     .info-item:hover .info-icon { background:rgba(37,150,190,.15); border-color:rgba(37,150,190,.4); }
@@ -219,7 +230,7 @@
     .map-link svg { width:11px; height:11px; fill:currentColor; }
 
     /* Instagram card */
-    .ig-card { background:linear-gradient(160deg,rgba(37,150,190,.1),var(--dark2) 60%); border:1px solid rgba(37,150,190,.3); border-radius:16px; padding:2rem 1.8rem 1.8rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.1rem; width:100%; box-shadow:0 8px 30px rgba(37,150,190,.08); }
+    .ig-card { background:linear-gradient(160deg,rgba(37,150,190,.1),var(--dark2) 60%); border:1px solid rgba(37,150,190,.3); border-radius:16px; padding:1.2rem 1.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.8rem; width:100%; box-shadow:0 8px 30px rgba(37,150,190,.08); }
     .ig-avatar { width:78px; height:78px; border-radius:50%; padding:3px; background:linear-gradient(135deg,var(--primary),#1d7a9e); box-shadow:0 0 22px var(--primary-glow); overflow:hidden; flex-shrink:0; }
     .ig-avatar img { width:100%; height:100%; object-fit:cover; display:block; border-radius:50%; }
     .ig-handle { font-family:var(--font-display); font-size:1.2rem; letter-spacing:1px; color:var(--white); }
@@ -232,7 +243,7 @@
     .ig-follow-btn svg { width:17px; height:17px; fill:var(--white); flex-shrink:0; }
 
     /* Contact footer */
-    .contact-footer { margin-top:2rem; padding-top:1.8rem; border-top:1px solid rgba(255,255,255,.07); text-align:center; }
+    .contact-footer { margin-top:1.2rem; padding-top:1.2rem; border-top:1px solid rgba(255,255,255,.07); text-align:center; }
     .contact-footer-links { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-bottom:.8rem; }
     .contact-footer-links a { color:rgba(245,245,245,.28); text-decoration:none; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; transition:color .2s; }
     .contact-footer-links a:hover { color:var(--primary); }
@@ -268,7 +279,6 @@
     <li><a href="#about" data-es="Nosotros" data-en="About">About</a></li>
     <li><a href="#services" data-es="Servicios" data-en="Services">Services</a></li>
     <li><a href="#reviews" data-es="Reseñas" data-en="Reviews">Reviews</a></li>
-    <li><a href="#gallery" data-es="Galería" data-en="Gallery">Gallery</a></li>
     <li><a href="#contact" data-es="Contacto" data-en="Contact">Contact</a></li>
     <li><button class="lang-toggle" onclick="toggleLang()">ES | <span class="active-lang">EN</span></button></li>
   </ul>
@@ -280,7 +290,6 @@
   <a href="#about" onclick="closeMenu()" data-es="Nosotros" data-en="About">About</a>
   <a href="#services" onclick="closeMenu()" data-es="Servicios" data-en="Services">Services</a>
   <a href="#reviews" onclick="closeMenu()" data-es="Reseñas" data-en="Reviews">Reviews</a>
-  <a href="#gallery" onclick="closeMenu()" data-es="Galería" data-en="Gallery">Gallery</a>
   <a href="#contact" onclick="closeMenu()" data-es="Contacto" data-en="Contact">Contact</a>
   <button class="lang-toggle" onclick="toggleLang()">ES | <span class="active-lang">EN</span></button>
 </div>
@@ -289,7 +298,7 @@
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-badge" data-es="Cape Coral · Fort Myers · SW Florida" data-en="Cape Coral · Fort Myers · SW Florida">Cape Coral · Fort Myers · SW Florida</div>
+    <div class="hero-badge" data-es="Cape Coral" data-en="Cape Coral">Cape Coral<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"> · Fort Myers · SW Florida</span></div>
     <h1>NEXT LEVEL <span>BARBER SHOP</span></h1>
     <p class="hero-sub" data-es="Tu barbería de confianza en Cape Coral, FL" data-en="Your trusted barber shop in Cape Coral, FL">Your trusted barber shop in Cape Coral, FL</p>
     <div class="status-badge" id="statusBadge">
@@ -319,7 +328,7 @@
       <div class="stat-card"><div class="stat-num">102+</div><div class="stat-label" data-es="Reseñas" data-en="Reviews">Reviews</div></div>
       <div class="stat-card"><div class="stat-num">4.8 ★</div><div class="stat-label" data-es="Estrellas Promedio" data-en="Avg Stars">Avg Stars</div></div>
       <div class="stat-card"><div class="stat-num">98%</div><div class="stat-label" data-es="Satisfacción" data-en="Satisfaction">Satisfaction</div></div>
-      <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label" data-es="Años de Experiencia" data-en="Years Experience">Years Experience</div></div>
+      <div class="stat-card"><div class="stat-num">2+</div><div class="stat-label" data-es="Años de Experiencia" data-en="Years Experience">Years Experience</div></div>
     </div>
   </div>
   <div class="about-right reveal">
@@ -327,7 +336,6 @@
       <img id="ownerImg" src="images/2.jpg" alt="Owner & Master Barber - Next Level Barber Shop Cape Coral FL" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
       <div class="owner-photo-overlay">
         <div class="owner-badge">
-          <span class="owner-name">Next Level</span>
           <span class="owner-title" data-es="Dueño &amp; Master Barber" data-en="Owner &amp; Master Barber">Owner &amp; Master Barber</span>
         </div>
       </div>
@@ -363,6 +371,10 @@
         <div class="service-price">$15+ <small data-es="desde" data-en="starting">starting</small></div>
       </div>
     </div>
+    <div class="services-work-label reveal">
+      <span data-es="Nuestro Trabajo" data-en="Our Work">Our Work</span>
+    </div>
+    <div class="gallery-carousel reveal" id="galleryGrid"></div>
   </div>
 </section>
 
@@ -421,18 +433,6 @@
   </div>
 </section>
 
-<section class="gallery" id="gallery">
-  <div class="container">
-    <div class="reveal">
-      <p class="section-label" data-es="Galería" data-en="Gallery">Gallery</p>
-      <h2 class="section-title" data-es="Nuestro Trabajo" data-en="Our Work">Our Work</h2>
-      <p class="section-desc" data-es="Resultados que hablan por sí solos." data-en="Results that speak for themselves.">Results that speak for themselves.</p>
-    </div>
-    <div class="gallery-carousel" id="galleryGrid">
-    </div>
-  </div>
-</section>
-
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
   <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
   <div id="lightboxContent"></div>
@@ -473,8 +473,7 @@
                   Apple Maps
                 </a>
               </div>
-              <div class="info-label" style="margin-top:.8rem;" data-es="Área de Servicio" data-en="Serving Area">Serving Area</div>
-              <div class="info-value" style="font-size:.82rem;color:var(--gray);" data-es="Cape Coral · Fort Myers · North Fort Myers · Lee County, FL" data-en="Cape Coral · Fort Myers · North Fort Myers · Lee County, FL">Cape Coral · Fort Myers · North Fort Myers · Lee County, FL</div>
+<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">Cape Coral · Fort Myers · North Fort Myers · Bonita Springs · Estero · Naples · Marco Island · Lehigh Acres · Immokalee · Ave Maria · Golden Gate · Collier County · Lee County · Charlotte County · Punta Gorda · Port Charlotte · Englewood · Venice · Sarasota · Southwest Florida · SW Florida · FL</span>
             </div>
           </div>
           <div class="info-item">
@@ -533,10 +532,10 @@
         <a href="#about" data-es="Nosotros" data-en="About">About</a>
         <a href="#services" data-es="Servicios" data-en="Services">Services</a>
         <a href="#reviews" data-es="Reseñas" data-en="Reviews">Reviews</a>
-        <a href="#gallery" data-es="Galería" data-en="Gallery">Gallery</a>
         <a href="#contact" data-es="Contacto" data-en="Contact">Contact</a>
       </div>
       <p class="contact-footer-copy">© 2026 Next Level Barber Shop &nbsp;·&nbsp; <a href="tel:+12393477992">+1 (239) 347-7992</a> &nbsp;·&nbsp; Cape Coral, FL</p>
+      <p class="contact-footer-copy" style="margin-top:.4rem;opacity:.5;">Designed by Damocles</p>
     </div>
   </div>
 </section>
@@ -723,7 +722,7 @@ function toggleLang() {
 }
 
 // ── Section snap scroll ──
-const snapSecs=[...document.querySelectorAll('#hero,#about,#services,#reviews,#gallery,#contact')];
+const snapSecs=[...document.querySelectorAll('#hero,#about,#services,#reviews,#contact')];
 let isSnapping=false,touchStartY=0;
 const isMobile=window.matchMedia('(pointer:coarse)').matches;
 
@@ -751,9 +750,12 @@ function getActiveIdx(){
 
 if(!isMobile){
   window.addEventListener('wheel',e=>{
-    e.preventDefault();if(isSnapping)return;
+    if(isSnapping)return;
     const dir=e.deltaY>0?1:-1,cur=getActiveIdx();
-    scrollToSection(snapSecs[Math.max(0,Math.min(snapSecs.length-1,cur+dir))]);
+    const next=cur+dir;
+    if(next<0||next>=snapSecs.length){return;}
+    e.preventDefault();
+    scrollToSection(snapSecs[next]);
   },{passive:false});
 }
 
