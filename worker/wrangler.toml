@@ -1,8 +1,0 @@
-name = "nextlevel-reviews"
-main = "index.js"
-compatibility_date = "2024-09-23"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "nextlevel-reviews"
-database_id = "dc96e8a4-6f75-4e45-ad74-4ca8aa3109b7"
