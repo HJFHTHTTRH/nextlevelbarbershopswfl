@@ -13,6 +13,7 @@
   <meta name="geo.position" content="26.6484834;-81.9753487">
   <meta name="ICBM" content="26.6484834, -81.9753487">
   <link rel="canonical" href="https://www.nextlevelbarbershopswfl.com/">
+  <link rel="icon" href="images/icon.webp" type="image/webp">
   <!-- Open Graph -->
   <meta property="og:type" content="local.business">
   <meta property="og:title" content="Next Level Barber Shop | Best Barber Shop in Cape Coral, FL">
@@ -136,24 +137,16 @@
     .review-author { font-weight: 600; font-size: .72rem; letter-spacing: 1px; text-transform: uppercase; color: var(--primary); }
     .review-date { font-size: .7rem; color: var(--gray); margin-top: .3rem; }
 
-    /* ── Review Form ── */
-    .review-form-wrap { background: var(--dark2); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 2.5rem 2.2rem; flex-shrink: 0; width: 460px; }
-    .review-form-wrap h3 { font-family: var(--font-display); font-size: 2rem; letter-spacing: 1px; margin-bottom: .3rem; }
-    .review-form-subtext { color: var(--gray); font-size: .78rem; font-weight: 300; margin-bottom: 1.6rem; }
-    .rf-field { margin-bottom: 1.1rem; }
-    .rf-field label { display: block; font-size: .7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: .45rem; }
-    .rf-field input, .rf-field textarea { width: 100%; background: var(--dark3); border: 1px solid rgba(255,255,255,.09); border-radius: 8px; padding: .7rem 1rem; color: var(--white); font-family: var(--font-body); font-size: .88rem; outline: none; transition: border-color .2s, box-shadow .2s; resize: vertical; }
-    .rf-field input:focus, .rf-field textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,150,190,.12); }
-    .rf-field textarea { min-height: 130px; }
-    .star-row { display: flex; gap: .3rem; }
-    .star-row button { background: none; border: none; font-size: 1.7rem; color: rgba(255,255,255,.15); cursor: pointer; transition: color .15s, transform .15s; line-height: 1; padding: 0; }
-    .star-row button.active { color: #f0b429; }
-    .star-row button:hover { transform: scale(1.2); }
-    .rf-msg { font-size: .82rem; margin-top: .7rem; min-height: 1.2em; }
-    .rf-msg.ok { color: #4caf88; }
-    .rf-msg.err { color: #e05c5c; }
-    .rf-msg.dup { color: var(--primary); }
-    @media (max-width: 1000px) { .reviews-layout { flex-direction: column; } .review-form-wrap { width: 100%; } }
+    /* ── Review CTA panel ── */
+    .review-cta-wrap { background: var(--dark2); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 2.5rem 2.2rem; flex-shrink: 0; width: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 1.2rem; }
+    .review-cta-wrap h3 { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 1px; line-height: 1.1; }
+    .review-cta-wrap h3 span { color: var(--primary); display: block; font-size: 1.5rem; }
+    .review-cta-stars { color: #f0b429; font-size: 1.6rem; letter-spacing: 4px; }
+    .review-cta-sub { color: var(--gray); font-size: .82rem; font-weight: 300; line-height: 1.6; }
+    .review-cta-btn { display: inline-flex; align-items: center; gap: .7rem; background: #fff; color: #333; font-family: var(--font-body); font-weight: 700; font-size: .95rem; border-radius: 8px; padding: .9rem 1.6rem; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 20px rgba(0,0,0,.3); width: 100%; justify-content: center; }
+    .review-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
+    .review-cta-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+    @media (max-width: 1000px) { .reviews-layout { flex-direction: column; } .review-cta-wrap { width: 100%; } }
 
     .gallery { background: var(--black); }
     .gallery-carousel { position: relative; overflow: hidden; margin-top: 3rem; -webkit-mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); }
@@ -300,9 +293,9 @@
     <h2 class="section-title" data-es="Más Que Una Barbería" data-en="More Than A Barbershop">More Than A Barbershop</h2>
     <p data-es="En Next Level Barber Shop en Cape Coral, FL, nos dedicamos a ofrecer los mejores cortes de cabello para hombres con servicio profesional y confiable. Desde fades perfectos hasta arreglos de barba — cada cliente recibe atención personalizada en un ambiente cómodo y moderno. Tu look, nuestro compromiso." data-en="At Next Level Barber Shop in Cape Coral, FL, we deliver the best men's haircuts with professional, reliable service. From flawless fade haircuts to expert beard trims — every client gets personalized attention in a comfortable, modern atmosphere. Your look, our commitment.">At Next Level Barber Shop in Cape Coral, FL, we deliver the best men's haircuts with professional, reliable service. From flawless fade haircuts to expert beard trims — every client gets personalized attention in a comfortable, modern atmosphere. Your look, our commitment.</p>
     <div class="about-stats" style="margin-top:2rem;">
-      <div class="stat-card"><div class="stat-num" id="statTotal">—</div><div class="stat-label" data-es="Reseñas" data-en="Reviews">Reviews</div></div>
-      <div class="stat-card"><div class="stat-num" id="statAvg">—</div><div class="stat-label" data-es="Estrellas Promedio" data-en="Avg Stars">Avg Stars</div></div>
-      <div class="stat-card"><div class="stat-num" id="statSat">—</div><div class="stat-label" data-es="Satisfacción" data-en="Satisfaction">Satisfaction</div></div>
+      <div class="stat-card"><div class="stat-num">200+</div><div class="stat-label" data-es="Reseñas" data-en="Reviews">Reviews</div></div>
+      <div class="stat-card"><div class="stat-num">4.9 ★</div><div class="stat-label" data-es="Estrellas Promedio" data-en="Avg Stars">Avg Stars</div></div>
+      <div class="stat-card"><div class="stat-num">98%</div><div class="stat-label" data-es="Satisfacción" data-en="Satisfaction">Satisfaction</div></div>
       <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label" data-es="Años de Experiencia" data-en="Years Experience">Years Experience</div></div>
     </div>
   </div>
@@ -356,33 +349,45 @@
     </div>
     <div class="reviews-layout">
       <div class="reviews-left reveal">
-        <div class="reviews-feed" id="reviewsTrack"></div>
+        <div class="reviews-feed" id="reviewsTrack">
+          <!-- 5 English + 5 Spanish — duplicated for infinite loop -->
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Best barbershop in Cape Coral, hands down. My fade was clean and exactly what I asked for. These guys are true professionals."</p><p class="review-author">— Marcus T.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Walked in without an appointment and was taken care of right away. Great atmosphere and an even better cut. Will definitely be back."</p><p class="review-author">— James R.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"My son and I come here every month. The barbers are skilled, friendly, and fast. 10/10 every single time, no complaints whatsoever."</p><p class="review-author">— Derek L.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Finally found a barbershop that gets my hair right on the first try. The attention to detail here is unmatched in the whole area."</p><p class="review-author">— Anthony M.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Clean shop, great music, and even better cuts. My barber took his time and delivered exactly what I wanted. Highly recommend."</p><p class="review-author">— Carlos P.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"El mejor corte que me han dado desde que llegué a Florida. El ambiente es increíble y el equipo muy profesional. Volveré siempre."</p><p class="review-author">— Miguel A.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Llevo dos años viniendo aquí y nunca me han fallado. Mis hijos también vienen y siempre salen felices. Son los mejores del área."</p><p class="review-author">— Roberto F.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Entré sin cita y me atendieron rápido. El corte quedó perfecto, exactamente lo que pedí. Muy recomendado para toda la familia."</p><p class="review-author">— Andrés G.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"El mejor barbershop del área de Cape Coral. Profesionales, puntuales y con mucho talento. No voy a ningún otro lugar."</p><p class="review-author">— Luis V.</p></div>
+          <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Excelente servicio y un ambiente muy agradable. Me siento como en casa cada vez que vengo. 100% recomendado sin dudarlo."</p><p class="review-author">— José M.</p></div>
+          <!-- Duplicate for seamless loop -->
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"Best barbershop in Cape Coral, hands down. My fade was clean and exactly what I asked for. These guys are true professionals."</p><p class="review-author">— Marcus T.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"Walked in without an appointment and was taken care of right away. Great atmosphere and an even better cut. Will definitely be back."</p><p class="review-author">— James R.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"My son and I come here every month. The barbers are skilled, friendly, and fast. 10/10 every single time, no complaints whatsoever."</p><p class="review-author">— Derek L.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"Finally found a barbershop that gets my hair right on the first try. The attention to detail here is unmatched in the whole area."</p><p class="review-author">— Anthony M.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"Clean shop, great music, and even better cuts. My barber took his time and delivered exactly what I wanted. Highly recommend."</p><p class="review-author">— Carlos P.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"El mejor corte que me han dado desde que llegué a Florida. El ambiente es increíble y el equipo muy profesional. Volveré siempre."</p><p class="review-author">— Miguel A.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"Llevo dos años viniendo aquí y nunca me han fallado. Mis hijos también vienen y siempre salen felices. Son los mejores del área."</p><p class="review-author">— Roberto F.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"Entré sin cita y me atendieron rápido. El corte quedó perfecto, exactamente lo que pedí. Muy recomendado para toda la familia."</p><p class="review-author">— Andrés G.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"El mejor barbershop del área de Cape Coral. Profesionales, puntuales y con mucho talento. No voy a ningún otro lugar."</p><p class="review-author">— Luis V.</p></div>
+          <div class="review-card" aria-hidden="true"><div class="review-stars">★★★★★</div><p class="review-text">"Excelente servicio y un ambiente muy agradable. Me siento como en casa cada vez que vengo. 100% recomendado sin dudarlo."</p><p class="review-author">— José M.</p></div>
+        </div>
       </div>
-      <div class="review-form-wrap reveal" id="reviewFormWrap">
-        <h3 data-es="Deja Tu Reseña" data-en="Leave Your Review">Leave Your Review</h3>
-        <p class="review-form-subtext" data-es="Tu opinión importa. Comparte tu experiencia." data-en="Your opinion matters. Share your experience.">Your opinion matters. Share your experience.</p>
-        <form id="reviewForm" novalidate>
-          <div class="rf-field">
-            <label for="rf-name" data-es="Tu Nombre" data-en="Your Name">Your Name</label>
-            <input id="rf-name" type="text" maxlength="100" required placeholder="John Smith" data-ph-es="Mario González" data-ph-en="John Smith">
-          </div>
-          <div class="rf-field">
-            <label data-es="Calificación" data-en="Rating">Rating</label>
-            <div class="star-row" id="starRow" role="group" aria-label="Rating">
-              <button type="button" data-val="1" aria-label="1 star">★</button>
-              <button type="button" data-val="2" aria-label="2 stars">★</button>
-              <button type="button" data-val="3" aria-label="3 stars">★</button>
-              <button type="button" data-val="4" aria-label="4 stars">★</button>
-              <button type="button" data-val="5" aria-label="5 stars">★</button>
-            </div>
-          </div>
-          <div class="rf-field">
-            <label for="rf-body" data-es="Tu Experiencia" data-en="Your Experience">Your Experience</label>
-            <textarea id="rf-body" maxlength="1000" required placeholder="Excellent service, very professional..." data-ph-es="Excelente servicio, muy profesional..." data-ph-en="Excellent service, very professional..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:.4rem;" data-es="Enviar Reseña" data-en="Submit Review">Submit Review</button>
-          <p class="rf-msg" id="rfMsg"></p>
-        </form>
+
+      <div class="review-cta-wrap reveal">
+        <div class="review-cta-stars">★★★★★</div>
+        <h3 data-es="Deja Tu<span>Reseña</span>" data-en="Leave Your<span>Review</span>">Leave Your <span>Review</span></h3>
+        <p class="review-cta-sub" data-es="¿Te gustó tu corte? Tu opinión ayuda a otros clientes a encontrarnos. Toma un segundo y cuéntanos tu experiencia en Google." data-en="Loved your cut? Your feedback helps others find us. Take a second and share your experience on Google.">Loved your cut? Your feedback helps others find us. Take a second and share your experience on Google.</p>
+        <a class="review-cta-btn" href="https://www.google.com/maps/place/Next+Level+Barber+Shop/@26.6484882,-81.9779236,17z/data=!3m1!4b1!4m6!3m5!1s0x88db47fc4572d10d:0xff912e4554887962!8m2!3d26.6484834!4d-81.9753487!16s%2Fg%2F11kqlnl8ps?entry=ttu" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span data-es="Calificarnos en Google" data-en="Rate Us on Google">Rate Us on Google</span>
+        </a>
       </div>
     </div>
   </div>
@@ -751,114 +756,6 @@ setInterval(updateStatus, 60000);
   if(cell){ cell.classList.add('today-cell'); const b=document.createElement('span'); b.className='dc-badge'; b.textContent='Today'; cell.appendChild(b); }
 })();
 
-// ─── REVIEW FORM ───
-(function () {
-  const WORKER_URL = 'https://nextlevel-reviews.ds2plhvo72hv.workers.dev';
-  const UUID_KEY = 'nlbs_review_uuid';
-
-  function getUUID() {
-    let id = localStorage.getItem(UUID_KEY);
-    if (!id) { id = crypto.randomUUID(); localStorage.setItem(UUID_KEY, id); }
-    return id;
-  }
-
-  function fmtDate(iso) {
-    if (!iso) return '';
-    const d = new Date(iso);
-    if (isNaN(d)) return '';
-    return (d.getMonth()+1).toString().padStart(2,'0') + '/' + d.getDate().toString().padStart(2,'0') + '/' + d.getFullYear();
-  }
-
-  function makeCard(r) {
-    const stars = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
-    const card = document.createElement('div');
-    card.className = 'review-card';
-    const dateHtml = r.created_at ? '<p class="review-date">' + fmtDate(r.created_at) + '</p>' : '';
-    card.innerHTML = '<div class="review-stars">' + stars + '</div><p class="review-text">"' + r.body.replace(/</g,'&lt;') + '"</p><p class="review-author">— ' + r.name.replace(/</g,'&lt;') + '</p>' + dateHtml;
-    return card;
-  }
-
-  function prependCard(r) {
-    const track = document.getElementById('reviewsTrack');
-    track.insertBefore(makeCard(r), track.firstChild);
-  }
-
-  // Load reviews from worker on page load
-  fetch(WORKER_URL + '/reviews')
-    .then(res => res.json())
-    .then(reviews => {
-      const track = document.getElementById('reviewsTrack');
-      reviews.forEach(r => track.appendChild(makeCard(r)));
-      reviews.forEach(r => { const c = makeCard(r); c.setAttribute('aria-hidden','true'); track.appendChild(c); });
-    })
-    .catch(() => {});
-
-  // Live stats
-  function loadStats() {
-    fetch(WORKER_URL + '/stats')
-      .then(r => r.json())
-      .then(s => {
-        document.getElementById('statTotal').textContent = s.total + '+';
-        document.getElementById('statAvg').textContent = s.avg;
-        document.getElementById('statSat').textContent = s.satisfaction + '%';
-      })
-      .catch(() => {});
-  }
-  loadStats();
-
-  let selectedStars = 0;
-  const starBtns = document.querySelectorAll('#starRow button');
-  starBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      selectedStars = parseInt(btn.dataset.val);
-      starBtns.forEach(b => b.classList.toggle('active', parseInt(b.dataset.val) <= selectedStars));
-    });
-  });
-
-  document.getElementById('reviewForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const msg = document.getElementById('rfMsg');
-    const name = document.getElementById('rf-name').value.trim();
-    const body = document.getElementById('rf-body').value.trim();
-    const lang = currentLang;
-
-    if (!name) { msg.className = 'rf-msg err'; msg.textContent = lang === 'es' ? 'Escribe tu nombre.' : 'Please enter your name.'; return; }
-    if (!selectedStars) { msg.className = 'rf-msg err'; msg.textContent = lang === 'es' ? 'Selecciona las estrellas.' : 'Please select a star rating.'; return; }
-    if (!body) { msg.className = 'rf-msg err'; msg.textContent = lang === 'es' ? 'Cuéntanos tu experiencia.' : 'Please write about your experience.'; return; }
-
-    const submitBtn = this.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    msg.className = 'rf-msg'; msg.textContent = '';
-
-    try {
-      const res = await fetch(WORKER_URL + '/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uuid: getUUID(), name, body, stars: selectedStars }),
-      });
-      const data = await res.json();
-
-      if (data.duplicate) {
-        msg.className = 'rf-msg dup';
-        msg.textContent = lang === 'es' ? '¡Ya dejaste una reseña, gracias!' : 'You already left a review, thanks!';
-      } else if (data.ok) {
-        msg.className = 'rf-msg ok';
-        msg.textContent = lang === 'es' ? '¡Gracias por tu reseña!' : 'Thank you for your review!';
-        prependCard({ name, body, stars: selectedStars, created_at: new Date().toISOString() });
-        loadStats();
-        this.reset();
-        selectedStars = 0;
-        starBtns.forEach(b => b.classList.remove('active'));
-      } else {
-        throw new Error('Server error');
-      }
-    } catch {
-      msg.className = 'rf-msg err';
-      msg.textContent = lang === 'es' ? 'Error al enviar. Intenta de nuevo.' : 'Error sending. Please try again.';
-      submitBtn.disabled = false;
-    }
-  });
-})();
 
 // ─── GALLERY: infinite carousel ───
 (function() {
