@@ -97,7 +97,9 @@
     .reveal { opacity: 0; transform: translateY(40px); transition: all .7s cubic-bezier(.22,1,.36,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    .services { background: var(--dark); }
+    .services { background: var(--dark); position: relative; overflow: hidden; }
+    .services-bg { position: absolute; inset: 0; background: url('images/services.webp') center/cover no-repeat; filter: brightness(.18); }
+    .services .container { position: relative; z-index: 1; }
     .services-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; margin-top: 3rem; }
     .service-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 2rem; transition: all .35s; position: relative; overflow: hidden; }
     .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--primary); transform: scaleX(0); transition: transform .35s; }
@@ -116,16 +118,17 @@
     .about-right { flex: 1 1 380px; display: flex; flex-direction: column; gap: 1.5rem; }
     .owner-photo { position: relative; border-radius: 12px; overflow: hidden; width: 100%; }
     .owner-photo-bg { display: none; }
-    .owner-photo-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 50%, rgba(10,10,10,.88) 100%); display: flex; align-items: flex-end; padding: 1.5rem; border-radius: 0 0 12px 12px; }
-    .owner-badge { display: flex; flex-direction: column; gap: .3rem; }
-    .owner-title { font-size: .7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); border: 1px solid var(--primary); display: inline-block; padding: .35rem .9rem; border-radius: 3px; }
+    .owner-photo-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 30%, rgba(10,10,10,.96) 100%); display: flex; align-items: flex-end; padding: 1.5rem; border-radius: 0 0 12px 12px; }
+    .owner-badge { display: flex; flex-direction: column; gap: .5rem; }
+    .owner-name { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 2px; color: var(--white); line-height: 1; }
+    .owner-title { font-size: .68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); background: rgba(37,150,190,.15); border: 1px solid rgba(37,150,190,.5); display: inline-block; padding: .4rem 1rem; border-radius: 4px; backdrop-filter: blur(4px); }
     .about-stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
     .stat-card { background: var(--dark2); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 1.5rem; text-align: left; }
     .stat-num { font-family: var(--font-display); font-size: 2.5rem; color: var(--primary); line-height: 1; }
     .stat-label { font-size: .75rem; color: var(--gray); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; margin-top: .4rem; }
 
     .reviews { background: var(--dark); scroll-margin-top: var(--nav-h); }
-    .reviews-layout { display: flex; gap: 2.5rem; align-items: flex-start; margin-top: 3rem; }
+    .reviews-layout { display: flex; gap: 2.5rem; align-items: center; margin-top: 3rem; }
     .reviews-left { flex: 1 1 0; min-width: 0; position: relative; height: 540px; overflow: hidden; -webkit-mask: linear-gradient(180deg,transparent,black 8%,black 92%,transparent); mask: linear-gradient(180deg,transparent,black 8%,black 92%,transparent); }
     .reviews-feed { display: flex; flex-direction: column; gap: 1rem; animation: reviewsScrollV 90s linear infinite; }
     .reviews-feed:hover { animation-play-state: paused; }
@@ -138,7 +141,9 @@
     .review-date { font-size: .7rem; color: var(--gray); margin-top: .3rem; }
 
     /* ── Review CTA panel ── */
-    .review-cta-wrap { background: var(--dark2); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 2.5rem 2.2rem; flex-shrink: 0; width: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 1.2rem; }
+    .review-cta-wrap { background: var(--dark2); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 0; flex-shrink: 0; width: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 0; overflow: hidden; margin-top: -8rem; }
+    .review-cta-img { width: 100%; height: auto; display: block; }
+    .review-cta-body { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; padding: 2rem 2.2rem 2.5rem; }
     .review-cta-wrap h3 { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 1px; line-height: 1.1; }
     .review-cta-wrap h3 span { color: var(--primary); display: block; font-size: 1.5rem; }
     .review-cta-stars { color: #f0b429; font-size: 1.6rem; letter-spacing: 4px; }
@@ -146,7 +151,7 @@
     .review-cta-btn { display: inline-flex; align-items: center; gap: .7rem; background: #fff; color: #333; font-family: var(--font-body); font-weight: 700; font-size: .95rem; border-radius: 8px; padding: .9rem 1.6rem; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 20px rgba(0,0,0,.3); width: 100%; justify-content: center; }
     .review-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
     .review-cta-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
-    @media (max-width: 1000px) { .reviews-layout { flex-direction: column; } .review-cta-wrap { width: 100%; } }
+    @media (max-width: 1000px) { .reviews-layout { flex-direction: column; } .review-cta-wrap { width: 100%; margin-top: 0; } }
 
     .gallery { background: var(--black); }
     .gallery-carousel { position: relative; overflow: hidden; margin-top: 3rem; -webkit-mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); mask: linear-gradient(90deg,transparent,black 8%,black 92%,transparent); }
@@ -176,48 +181,66 @@
     .status-badge.closed .status-dot { background:#f87171; }
     @keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
-    .contact { background: var(--dark); min-height: unset; position: relative; }
+    .contact { background: var(--dark); min-height: unset !important; position: relative; padding-bottom: 2.5rem; }
     .contact::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--primary),transparent); }
 
-    .contact-cols { display:grid; grid-template-columns:1fr 1fr; gap:4rem; margin-top:3rem; }
+    .contact-top { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2.5rem; align-items:stretch; }
+    .contact-bottom { margin-top:2rem; background:var(--dark2); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:1.8rem 2rem; }
+    .contact-cols { display:contents; }
 
-    .contact-block-label { font-size:.68rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--primary); margin-bottom:1.2rem; display:flex; align-items:center; gap:10px; }
-    .contact-block-label::after { content:''; flex:1; height:1px; background:rgba(255,255,255,.07); }
+    .contact-block { background:var(--dark2); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:1.8rem 2rem; }
+    .contact-block-label { font-size:.65rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--primary); margin-bottom:1.2rem; display:flex; align-items:center; gap:10px; }
+    .contact-block-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(37,150,190,.3),transparent); }
 
     /* Week grid */
-    .week-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
-    .day-cell { background:var(--dark2); border:1px solid rgba(255,255,255,.06); border-radius:8px; padding:1rem .4rem; text-align:center; transition:border-color .2s; }
-    .day-cell.today-cell { background:linear-gradient(160deg,rgba(37,150,190,.2),rgba(37,150,190,.06)); border-color:rgba(37,150,190,.55); box-shadow:0 0 20px rgba(37,150,190,.1); }
-    .dc-abbr { display:block; font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gray); margin-bottom:6px; }
+    .week-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+    .day-cell { background:var(--dark3); border:1px solid rgba(255,255,255,.05); border-radius:10px; padding:1rem .4rem; text-align:center; transition:all .25s; }
+    .day-cell:hover { border-color:rgba(37,150,190,.25); transform:translateY(-2px); }
+    .day-cell.today-cell { background:linear-gradient(160deg,rgba(37,150,190,.22),rgba(37,150,190,.06)); border-color:rgba(37,150,190,.6); box-shadow:0 4px 20px rgba(37,150,190,.15); }
+    .dc-abbr { display:block; font-size:.6rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gray); margin-bottom:7px; }
     .today-cell .dc-abbr { color:var(--primary); }
-    .dc-time { display:block; font-size:.7rem; font-weight:500; color:rgba(245,245,245,.5); line-height:1.5; }
+    .dc-time { display:block; font-size:.68rem; font-weight:500; color:rgba(245,245,245,.45); line-height:1.55; }
     .today-cell .dc-time { color:var(--white); }
-    .dc-badge { display:inline-block; margin-top:5px; font-size:.5rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--white); background:var(--primary); padding:2px 6px; border-radius:3px; }
+    .dc-badge { display:inline-block; margin-top:5px; font-size:.48rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--white); background:var(--primary); padding:2px 6px; border-radius:3px; }
 
     /* Info list */
-    .info-list { display:flex; flex-direction:column; gap:1.4rem; }
+    .info-list { display:flex; flex-direction:column; gap:1.3rem; }
     .info-item { display:flex; align-items:flex-start; gap:14px; }
-    .info-icon { width:42px; height:42px; flex-shrink:0; border-radius:10px; background:rgba(37,150,190,.08); border:1px solid rgba(37,150,190,.18); display:flex; align-items:center; justify-content:center; }
-    .info-icon svg { width:17px; height:17px; fill:var(--primary); }
-    .info-label { font-size:.65rem; color:var(--gray); letter-spacing:.12em; text-transform:uppercase; margin-bottom:3px; }
-    .info-value { color:rgba(245,245,245,.8); font-size:.92rem; line-height:1.6; }
-    .info-value a { color:rgba(245,245,245,.8); text-decoration:none; transition:color .2s; display:block; }
+    .info-icon { width:40px; height:40px; flex-shrink:0; border-radius:10px; background:rgba(37,150,190,.08); border:1px solid rgba(37,150,190,.2); display:flex; align-items:center; justify-content:center; transition:all .25s; }
+    .info-item:hover .info-icon { background:rgba(37,150,190,.15); border-color:rgba(37,150,190,.4); }
+    .info-icon svg { width:16px; height:16px; fill:var(--primary); }
+    .info-label { font-size:.63rem; color:var(--gray); letter-spacing:.12em; text-transform:uppercase; margin-bottom:3px; }
+    .info-value { color:rgba(245,245,245,.85); font-size:.9rem; line-height:1.65; }
+    .info-value a { color:rgba(245,245,245,.85); text-decoration:none; transition:color .2s; display:block; }
     .info-value a:hover { color:var(--primary); }
     .map-links { display:flex; gap:.5rem; margin-top:.5rem; flex-wrap:wrap; }
-    .map-link { display:inline-flex; align-items:center; gap:4px; background:var(--dark3); border:1px solid rgba(255,255,255,.09); color:rgba(245,245,245,.5); text-decoration:none; padding:5px 12px; border-radius:4px; font-size:.72rem; font-weight:500; letter-spacing:.02em; transition:all .2s; }
-    .map-link:hover { border-color:var(--primary); color:var(--primary); }
+    .map-link { display:inline-flex; align-items:center; gap:4px; background:var(--dark3); border:1px solid rgba(255,255,255,.08); color:rgba(245,245,245,.45); text-decoration:none; padding:5px 11px; border-radius:5px; font-size:.7rem; font-weight:500; letter-spacing:.02em; transition:all .2s; }
+    .map-link:hover { border-color:var(--primary); color:var(--primary); background:rgba(37,150,190,.06); }
     .map-link svg { width:11px; height:11px; fill:currentColor; }
 
+    /* Instagram card */
+    .ig-card { background:linear-gradient(160deg,rgba(37,150,190,.1),var(--dark2) 60%); border:1px solid rgba(37,150,190,.3); border-radius:16px; padding:2rem 1.8rem 1.8rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.1rem; width:100%; box-shadow:0 8px 30px rgba(37,150,190,.08); }
+    .ig-avatar { width:78px; height:78px; border-radius:50%; padding:3px; background:linear-gradient(135deg,var(--primary),#1d7a9e); box-shadow:0 0 22px var(--primary-glow); overflow:hidden; flex-shrink:0; }
+    .ig-avatar img { width:100%; height:100%; object-fit:cover; display:block; border-radius:50%; }
+    .ig-handle { font-family:var(--font-display); font-size:1.2rem; letter-spacing:1px; color:var(--white); }
+    .ig-stats { display:flex; gap:1.8rem; text-align:center; }
+    .ig-stat-num { font-family:var(--font-display); font-size:1.5rem; color:var(--primary); line-height:1; }
+    .ig-stat-label { font-size:.6rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-top:3px; }
+    .ig-divider { width:100%; height:1px; background:linear-gradient(90deg,transparent,rgba(37,150,190,.3),transparent); }
+    .ig-follow-btn { display:inline-flex; align-items:center; justify-content:center; gap:.6rem; background:var(--primary); color:var(--white); font-family:var(--font-body); font-weight:700; font-size:.8rem; letter-spacing:2px; text-transform:uppercase; text-decoration:none; border-radius:9px; padding:.8rem 1.5rem; width:100%; transition:all .25s; box-shadow:0 4px 22px var(--primary-glow); }
+    .ig-follow-btn:hover { background:var(--primary-dark); transform:translateY(-2px); box-shadow:0 8px 32px var(--primary-glow); }
+    .ig-follow-btn svg { width:17px; height:17px; fill:var(--white); flex-shrink:0; }
+
     /* Contact footer */
-    .contact-footer { margin-top:3.5rem; padding-top:2rem; border-top:1px solid rgba(255,255,255,.07); text-align:center; }
-    .contact-footer-links { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-bottom:1rem; }
-    .contact-footer-links a { color:rgba(245,245,245,.3); text-decoration:none; font-size:.75rem; letter-spacing:.05em; text-transform:uppercase; transition:color .2s; }
+    .contact-footer { margin-top:2rem; padding-top:1.8rem; border-top:1px solid rgba(255,255,255,.07); text-align:center; }
+    .contact-footer-links { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-bottom:.8rem; }
+    .contact-footer-links a { color:rgba(245,245,245,.28); text-decoration:none; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; transition:color .2s; }
     .contact-footer-links a:hover { color:var(--primary); }
-    .contact-footer-copy { font-size:.72rem; color:rgba(153,153,153,.7); }
+    .contact-footer-copy { font-size:.7rem; color:rgba(153,153,153,.6); }
     .contact-footer-copy a { color:inherit; text-decoration:none; transition:color .2s; }
     .contact-footer-copy a:hover { color:var(--primary); }
 
-    @media(max-width:900px) { .contact-cols { grid-template-columns:1fr; gap:2.5rem; } .week-grid { grid-template-columns:repeat(4,1fr); } }
+    @media(max-width:900px) { .contact-top { grid-template-columns:1fr; } .week-grid { grid-template-columns:repeat(4,1fr); } }
 
     .footer { background: var(--black); border-top: 1px solid rgba(255,255,255,.06); padding: 3rem clamp(1.2rem,4vw,3rem) 2rem; }
     .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 2rem; max-width: 1200px; margin: 0 auto; }
@@ -304,6 +327,7 @@
       <img id="ownerImg" src="images/2.jpg" alt="Owner & Master Barber - Next Level Barber Shop Cape Coral FL" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
       <div class="owner-photo-overlay">
         <div class="owner-badge">
+          <span class="owner-name">Next Level</span>
           <span class="owner-title" data-es="Dueño &amp; Master Barber" data-en="Owner &amp; Master Barber">Owner &amp; Master Barber</span>
         </div>
       </div>
@@ -312,6 +336,7 @@
 </section>
 
 <section class="services" id="services">
+  <div class="services-bg" aria-hidden="true"></div>
   <div class="container">
     <div class="reveal">
       <p class="section-label" data-es="Nuestros Servicios" data-en="Our Services">Our Services</p>
@@ -376,6 +401,8 @@
       </div>
 
       <div class="review-cta-wrap reveal">
+        <img src="images/review.webp" alt="Happy client at Next Level Barber Shop" class="review-cta-img">
+        <div class="review-cta-body">
         <div class="review-cta-stars">★★★★★</div>
         <h3 data-es="Deja Tu<span>Reseña</span>" data-en="Leave Your<span>Review</span>">Leave Your <span>Review</span></h3>
         <p class="review-cta-sub" data-es="¿Te gustó tu corte? Tu opinión ayuda a otros clientes a encontrarnos. Toma un segundo y cuéntanos tu experiencia en Google." data-en="Loved your cut? Your feedback helps others find us. Take a second and share your experience on Google.">Loved your cut? Your feedback helps others find us. Take a second and share your experience on Google.</p>
@@ -388,6 +415,7 @@
           </svg>
           <span data-es="Calificarnos en Google" data-en="Rate Us on Google">Rate Us on Google</span>
         </a>
+        </div>
       </div>
     </div>
   </div>
@@ -416,21 +444,8 @@
       <p class="section-label" data-es="Contacto" data-en="Contact">Contact</p>
       <h2 class="section-title" data-es="Contáctanos &amp; Horario" data-en="Contact &amp; Hours">Contact &amp; Hours</h2>
     </div>
-    <div class="contact-cols">
-
-      <!-- Hours -->
-      <div class="contact-block reveal">
-        <p class="contact-block-label" data-es="Horario de Atención" data-en="Hours of Operation">Hours of Operation</p>
-        <div class="week-grid" id="weekGrid">
-          <div class="day-cell" id="day-1"><span class="dc-abbr" data-es="Lun" data-en="Mon">Mon</span><span class="dc-time">9:30AM<br>7PM</span></div>
-          <div class="day-cell" id="day-2"><span class="dc-abbr" data-es="Mar" data-en="Tue">Tue</span><span class="dc-time">9:30AM<br>7PM</span></div>
-          <div class="day-cell" id="day-3"><span class="dc-abbr" data-es="Mié" data-en="Wed">Wed</span><span class="dc-time">9:30AM<br>7PM</span></div>
-          <div class="day-cell" id="day-4"><span class="dc-abbr" data-es="Jue" data-en="Thu">Thu</span><span class="dc-time">9:30AM<br>7PM</span></div>
-          <div class="day-cell" id="day-5"><span class="dc-abbr" data-es="Vie" data-en="Fri">Fri</span><span class="dc-time">9:30AM<br>7PM</span></div>
-          <div class="day-cell" id="day-6"><span class="dc-abbr" data-es="Sáb" data-en="Sat">Sat</span><span class="dc-time">9AM<br>6PM</span></div>
-          <div class="day-cell" id="day-0"><span class="dc-abbr" data-es="Dom" data-en="Sun">Sun</span><span class="dc-time">10AM<br>2PM</span></div>
-        </div>
-      </div>
+    <!-- Fila 1: Info + Instagram -->
+    <div class="contact-top">
 
       <!-- Info -->
       <div class="contact-block reveal">
@@ -477,6 +492,37 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- Instagram -->
+      <div class="ig-card reveal">
+        <div class="ig-avatar">
+          <img src="images/icon.webp" alt="Next Level Barber Shop Instagram">
+        </div>
+        <p class="ig-handle">@next_level_barber_shop_</p>
+        <div class="ig-stats">
+          <div><div class="ig-stat-num">228</div><div class="ig-stat-label" data-es="Posts" data-en="Posts">Posts</div></div>
+          <div><div class="ig-stat-num">410</div><div class="ig-stat-label" data-es="Seguidores" data-en="Followers">Followers</div></div>
+          <div><div class="ig-stat-num">349</div><div class="ig-stat-label" data-es="Siguiendo" data-en="Following">Following</div></div>
+        </div>
+        <div class="ig-divider"></div>
+        <a class="ig-follow-btn" href="https://www.instagram.com/next_level_barber_shop_/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <span data-es="Seguir en Instagram" data-en="Follow on Instagram">Follow on Instagram</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Fila 2: Calendario centrado -->
+    <div class="contact-bottom reveal">
+      <p class="contact-block-label" data-es="Horario de Atención" data-en="Hours of Operation">Hours of Operation</p>
+      <div class="week-grid" id="weekGrid">
+        <div class="day-cell" id="day-1"><span class="dc-abbr" data-es="Lun" data-en="Mon">Mon</span><span class="dc-time">9:30AM<br>7PM</span></div>
+        <div class="day-cell" id="day-2"><span class="dc-abbr" data-es="Mar" data-en="Tue">Tue</span><span class="dc-time">9:30AM<br>7PM</span></div>
+        <div class="day-cell" id="day-3"><span class="dc-abbr" data-es="Mié" data-en="Wed">Wed</span><span class="dc-time">9:30AM<br>7PM</span></div>
+        <div class="day-cell" id="day-4"><span class="dc-abbr" data-es="Jue" data-en="Thu">Thu</span><span class="dc-time">9:30AM<br>7PM</span></div>
+        <div class="day-cell" id="day-5"><span class="dc-abbr" data-es="Vie" data-en="Fri">Fri</span><span class="dc-time">9:30AM<br>7PM</span></div>
+        <div class="day-cell" id="day-6"><span class="dc-abbr" data-es="Sáb" data-en="Sat">Sat</span><span class="dc-time">9AM<br>6PM</span></div>
+        <div class="day-cell" id="day-0"><span class="dc-abbr" data-es="Dom" data-en="Sun">Sun</span><span class="dc-time">10AM<br>2PM</span></div>
       </div>
     </div>
 
